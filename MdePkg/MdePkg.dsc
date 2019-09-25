@@ -27,6 +27,9 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0xE0000000
 
 [Components]
+## MU_CHANGE BEGIN
+  MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
+## MU_CHANGE END
   MdePkg/Library/BaseCacheMaintenanceLib/BaseCacheMaintenanceLib.inf
   MdePkg/Library/BaseCpuLib/BaseCpuLib.inf
   MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf

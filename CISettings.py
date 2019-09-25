@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 import os
+import logging
 from edk2toolext.environment import shell_environment
 from edk2toolext.invocables.edk2_ci_build import CiBuildSettingsManager
 from edk2toolext.invocables.edk2_setup import SetupSettingsManager
@@ -37,9 +38,9 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
         ''' return iterable of edk2 packages supported by this build. 
         These should be edk2 workspace relative paths '''
 
-        return ("MdePkg",)
-                #"MdeModulePkg",
-                #"NetworkPkg",
+        return ("MdePkg",
+                "MdeModulePkg",
+                "NetworkPkg",
                 #"PcAtChipsetPkg",
                 #"SecurityPkg",
                 #"UefiCpuPkg",
@@ -47,6 +48,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
                 #"ShellPkg",
                 #"FatPkg",
                 #"CryptoPkg")
+                )
 
     def GetArchitecturesSupported(self):
         ''' return iterable of edk2 architectures supported by this build '''

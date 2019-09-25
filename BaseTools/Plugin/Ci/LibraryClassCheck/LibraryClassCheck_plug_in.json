@@ -1,0 +1,5 @@
+{
+    "scope": "cibuild",
+    "name": "Library Class Check Test",
+    "module": "LibraryClassCheck"
+  }

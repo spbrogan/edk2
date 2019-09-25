@@ -1,0 +1,5 @@
+{
+  "scope": "cibuild",
+  "name": "Compiler Plugin",
+  "module": "CompilerPlugin"
+}

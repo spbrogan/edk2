@@ -1,0 +1,5 @@
+{
+    "scope": "cibuild",
+    "name": "Char Encoding Check Test",
+    "module": "CharEncodingCheck"
+  }

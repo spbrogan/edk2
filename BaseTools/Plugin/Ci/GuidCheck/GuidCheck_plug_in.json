@@ -1,0 +1,5 @@
+{
+    "scope": "cibuild",
+    "name": "Guid Check Test",
+    "module": "GuidCheck"
+  }

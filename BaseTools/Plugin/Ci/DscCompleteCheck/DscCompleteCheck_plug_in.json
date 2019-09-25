@@ -1,0 +1,5 @@
+{
+    "scope": "cibuild",
+    "name": "Dsc Complete Check Test",
+    "module": "DscCompleteCheck"
+  }

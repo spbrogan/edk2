@@ -43,7 +43,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
                 "NetworkPkg",
                 "PcAtChipsetPkg",
                 "SecurityPkg",
-                #"UefiCpuPkg",
+                "UefiCpuPkg",
                 "FmpDevicePkg",
                 #"ShellPkg",
                 "FatPkg",

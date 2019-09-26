@@ -45,7 +45,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
                 "SecurityPkg",
                 "UefiCpuPkg",
                 "FmpDevicePkg",
-                #"ShellPkg",
+                "ShellPkg",
                 "FatPkg",
                 "CryptoPkg"
                 )

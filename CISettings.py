@@ -41,7 +41,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
         return ("MdePkg",
                 "MdeModulePkg",
                 "NetworkPkg",
-                #"PcAtChipsetPkg",
+                "PcAtChipsetPkg",
                 "SecurityPkg",
                 #"UefiCpuPkg",
                 "FmpDevicePkg",

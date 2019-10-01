@@ -427,8 +427,10 @@
   MdeModulePkg/Library/DxeCapsuleLibFmp/DxeRuntimeCapsuleLib.inf
 
 [Components.IA32, Components.X64, Components.AARCH64]
+!if $(TOOL_CHAIN_TAG) != "VS2019" and $(TOOL_CHAIN_TAG) != "VS2017" # mu_change - no masm file for vs
   MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
   MdeModulePkg/Universal/EbcDxe/EbcDebugger.inf
+!endif
   MdeModulePkg/Universal/EbcDxe/EbcDebuggerConfig.inf
 
 [Components.IA32, Components.X64, Components.ARM, Components.AARCH64]

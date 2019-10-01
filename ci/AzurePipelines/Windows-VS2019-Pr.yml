@@ -1,0 +1,10 @@
+trigger: none # will disable CI builds (but not PR builds)
+pr: 
+- master
+
+jobs:
+- template: templates/pr-gate-build-job.yml
+  parameters:
+    tool_chain_tag: 'VS2019'
+    vm_image: 'windows-latest'
+    

@@ -1,0 +1,13 @@
+trigger: none # will disable CI builds (but not PR builds)
+pr: 
+- master
+
+variables:
+  GCC_AARCH_PREFIX: bin/aarch64-linux-gnu-
+
+jobs:
+- template: templates/pr-gate-build-job.yml
+  parameters:
+    tool_chain_tag: 'GCC5'
+    vm_image: 'ubuntu-latest'
+    

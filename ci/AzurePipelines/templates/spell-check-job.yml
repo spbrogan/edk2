@@ -1,0 +1,38 @@
+# File templates/spell-check-job.yml
+
+parameters:
+  none: ''
+
+# Build step
+jobs: 
+
+- job: Spell_Check
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+      #checkLatest: false # Optional
+
+  - script: npm install -g cspell
+    displayName: 'Install cspell npm'
+
+  - script: cspell --config ci/cspell.json **/*.h
+    displayName: 'Spell Check header files'
+
+  - script: cspell --config ci/cspell.json **/*.c
+    displayName: 'Spell Check c files'
+
+  - script: cspell --config ci/cspell.json **/*.dsc
+    displayName: 'Spell Check DSC files'
+
+  - script: cspell --config ci/cspell.json **/*.dec
+    displayName: 'Spell Check DEC files'
+
+  - script: cspell --config ci/cspell.json **/*.inf
+    displayName: 'Spell Check INF files'
+
+  - script: cspell --config ci/cspell.json **/*.md
+    displayName: 'Spell Check markdown files'
+
+

@@ -1,0 +1,10 @@
+# Run this for both CI and PRs.
+trigger: 
+- master
+
+pr: 
+- master
+
+jobs:
+- template: templates/spell-check-job.yml
+    

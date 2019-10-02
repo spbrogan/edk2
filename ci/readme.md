@@ -4,7 +4,7 @@
 
 | Package | Windows VS2019 | Ubuntu GCC5 | Known Issues |
 | :----   | :-----         | :----       | :---         |
-| MdePkg | :heavy_check_mark: |  | |
+| MdePkg | :heavy_check_mark: |:heavy_check_mark:  | |
 | MdeModulePkg | :heavy_check_mark: |:heavy_check_mark: |DxeIpl dependency on ArmPkg, Missing Visual Studio AARCH64/ARM support |
 | CryptoPkg | :heavy_check_mark: | :heavy_check_mark:  | |
 |SecurityPkg|:heavy_check_mark:|:heavy_check_mark:||
@@ -79,12 +79,37 @@ When adding a test it can be added as either a *PyTool* test or just added to th
 
 ### Spell Checking - cspell
 
-A job is run to check the code tree for spelling issues.  This is done using the cspell tool.  For details check `ci/AzurePipelines/templates/pr-gate-spell-check-job.yml`.  The configuration file and custom dictionary is located in `ci/cspell.json`.  
+A job is run to check the code tree for spelling issues.  This is done using the cspell tool.  For details check `ci/AzurePipelines/templates/spell-check-job.yml`.  The configuration file and custom dictionary is located in `ci/cspell.json`. 
+
+#### To Test Locally
+
+Install
+
+* Install nodejs from https://nodejs.org/en/
+* Install cspell 
+  1. Open cmd prompt with access to node and npm
+  2. Run `npm install -g cspell`
+
+Run
+
+In an EDK2 code tree and command window run a command like below to check the different files.
+``` cmd
+cspell --config ci/cspell.json **/*.h
+cspell --config ci/cspell.json **/*.c
+cspell --config ci/cspell.json **/*.dsc
+cspell --config ci/cspell.json **/*.dec
+cspell --config ci/cspell.json **/*.inf
+cspell --config ci/cspell.json **/*.md
+```
+
+More info: https://github.com/streetsidesoftware/cspell
 
 ## Future investments
 
 * MacOS/xcode support
-* clang/LLVM support
-* Extensible private/closed source platform reporting
-* Platform builds and validation
+* Clang/LLVM support
 * Host based unit testing
+* Extensible private/closed source platform reporting
+* Platform builds, validation
+* UEFI SCTs
+* Other automation

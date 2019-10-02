@@ -11,6 +11,3 @@ jobs:
   parameters:
     tool_chain_tag: 'GCC5'
     vm_image: 'ubuntu-latest'
-
-- template: templates/pr-gate-spell-check-job.yml
-    

@@ -1,19 +1,23 @@
 # Edk2 Continuous Integration
 
-## Current Status
+## Basic Status
 
-| Package | Status | Known Issues |
-| :----   | :----- | :----             |
-| MdePkg | Passing |  |
-| MdeModulePkg | Passing | DxeIpl dependency on ArmPkg, Missing Visual Studio AARCH64/ARM support |
-| CryptoPkg | Passing |  |
-|SecurityPkg|Passing||
-| UefiCpuPkg | Passing |  |
-| NetworkPkg | Passing ||
-| PcAtChipsetPkg | Passing ||
-| ShellPkg | Passing ||
-|FmpDevicePkg|Passing||
-|FatPkg|Passing||
+| Package | Windows VS2019 | Ubuntu GCC5 | Known Issues |
+| :----   | :-----         | :----       | :---         |
+| MdePkg | :heavy_check_mark: |  | |
+| MdeModulePkg | :heavy_check_mark: |:heavy_check_mark: |DxeIpl dependency on ArmPkg, Missing Visual Studio AARCH64/ARM support |
+| CryptoPkg | :heavy_check_mark: | :heavy_check_mark:  | |
+|SecurityPkg|:heavy_check_mark:|:heavy_check_mark:||
+| UefiCpuPkg | :heavy_check_mark: |:heavy_check_mark: ||
+| NetworkPkg | :heavy_check_mark: |:heavy_check_mark:|
+| PcAtChipsetPkg | :heavy_check_mark: |:heavy_check_mark:|
+| ShellPkg | :heavy_check_mark: |:heavy_check_mark:|
+|FmpDevicePkg|:heavy_check_mark:|:heavy_check_mark:|
+|FatPkg|:heavy_check_mark:|:heavy_check_mark:|
+
+
+For more detailed status look at the test results of the latest CI run on the repo readme.
+
 
 ## Background
 
@@ -37,7 +41,7 @@ The global configuration file is described in [this readme](https://github.com/t
 
 The per-package configuration file can override most settings in the global configuration file, but is not dynamic. This file can be used to skip or customize tests that may be incompatible with a specific package. By default, the global configuration will try to run all tests on all packages.
 
-## Current Test Capabilities
+## Current PyTool Test Capabilities
 
 All CI tests are instances of EDKII Tools plugins. Documentation on the plugin system can be found [here](https://github.com/tianocore/edk2-pytool-extensions/blob/master/docs/usability/using_plugin_manager.md) and [here](https://github.com/tianocore/edk2-pytool-extensions/blob/master/docs/features/feature_plugin_manager.md). Upon invocation, each plugin will be passed the path to the current package under test and a dictionary containing its targeted configuration, as assembled from the command line, per-package configuration, and global configuration.
 
@@ -68,6 +72,14 @@ This test looks at all library header files found in a package's `Include/Librar
 ### Invalid Character Test - CharEncodingCheck
 
 This test scans all files in a package to make sure that there are no invalid Unicode characters that may cause build errors in some character sets/localizations.
+
+## Current Azure Pipeline Tests
+
+When adding a test it can be added as either a *PyTool* test or just added to the CI build process.  This should be a deliberate choice.  Any change added as a pipeline test is not as easily run on a private/local workspace.  But there are times where this is still the preferred method.  
+
+### Spell Checking - cspell
+
+A job is run to check the code tree for spelling issues.  This is done using the cspell tool.  For details check `ci/AzurePipelines/templates/pr-gate-spell-check-job.yml`.  The configuration file and custom dictionary is located in `ci/cspell.json`.  
 
 ## Future investments
 

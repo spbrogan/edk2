@@ -17,7 +17,7 @@ jobs:
   - script: npm install -g cspell
     displayName: 'Install cspell npm'
 
-  - script: cspell **/*
+  - script: cspell --config ci/cspell.json **/*
     displayName: 'Spell Check all files'
 
 

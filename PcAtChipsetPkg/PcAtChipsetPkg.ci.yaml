@@ -1,0 +1,34 @@
+{
+    "CompilerPlugin": {
+        "DscPath": "PcAtChipsetPkg.dsc"
+    },
+    "CharEncodingCheck": {
+        "IgnoreFiles": []
+    },
+    "DependencyCheck": {
+        "AcceptableDependencies": [
+            "MdePkg/MdePkg.dec",
+            #"MdeModulePkg/MdeModulePkg.dec",
+            "PcAtChipsetPkg/PcAtChipsetPkg.dec",
+            "UefiCpuPkg/UefiCpuPkg.dec"
+        ],
+        # For host based unit tests
+        "AcceptableDependencies-HOST_APPLICATION":[],
+        # For UEFI shell based apps
+        "AcceptableDependencies-UEFI_APPLICATION":[],
+        "IgnoreInf": []
+    },
+    "DscCompleteCheck": {
+        "DscPath": "PcAtChipsetPkg.dsc",
+        "IgnoreInf": []
+    },
+    "GuidCheck": {
+        "IgnoreGuidName": [],
+        "IgnoreGuidValue": [],
+        "IgnoreFoldersAndFiles": [],
+         "IgnoreDuplicates": []
+    },
+    "LibraryClassCheck": {
+        "IgnoreHeaderFile": []
+    }
+}

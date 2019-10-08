@@ -41,10 +41,9 @@
   DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
   SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
 
-  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
-  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLibNull/BaseCryptLibNull.inf
   IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
-  TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
+  TlsLib|CryptoPkg/Library/TlsLibNull/TlsLibNull.inf
   DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
   FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
@@ -99,6 +98,17 @@
 [Components]
   NetworkPkg/WifiConnectionManagerDxe/WifiConnectionManagerDxe.inf
   NetworkPkg/Application/VConfig/VConfig.inf
+
+  # MU_CHANGE BEGIN - Add missing components.
+  NetworkPkg/Library/DxeDpcLib/DxeDpcLib.inf
+  NetworkPkg/Library/DxeHttpLib/DxeHttpLib.inf
+  NetworkPkg/Library/DxeIpIoLib/DxeIpIoLib.inf
+  NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
+  NetworkPkg/Library/DxeTcpIoLib/DxeTcpIoLib.inf
+  NetworkPkg/Library/DxeUdpIoLib/DxeUdpIoLib.inf
+  NetworkPkg/SnpDxe/SnpDxe.inf
+  NetworkPkg/VlanConfigDxe/VlanConfigDxe.inf
+  # MU_CHANGE END
 
   !include NetworkPkg/Network.dsc.inc
 

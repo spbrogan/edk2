@@ -96,6 +96,12 @@
 # Drivers/Libraries within this package
 #
 
+# MU_CHANGE START
+[Components.X64, Components.IA32]
+  UefiCpuPkg/ResetVector/Vtf0/Bin/ResetVector.inf
+  UefiCpuPkg/Library/CpuCommonFeaturesLib/CpuCommonFeaturesLib.inf
+# MU_CHANGE END
+
 [Components]
   UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
   UefiCpuPkg/CpuIoPei/CpuIoPei.inf

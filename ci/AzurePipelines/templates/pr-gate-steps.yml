@@ -1,0 +1,106 @@
+# File templates/pr-gate-steps.yml
+#
+# template file containing the steps to build
+#
+# Copyright (c) 2019, Microsoft Corporation
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+parameters:
+  tool_chain_tag: ''
+  build_pkgs: ''
+  build_targets: ''
+
+steps:
+- checkout: self
+  clean: true
+  fetchDepth: 1
+  
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7.x'
+    architecture: 'x64'
+
+- script: pip install -r requirements.txt --upgrade
+  displayName: 'Install/Upgrade pip modules'
+
+# install spell check prereqs
+- template: spell-check-prereq-steps.yml
+
+# Build repo
+- task: CmdLine@1
+  displayName: Setup ${{ parameters.build_pkgs }}
+  inputs:
+    filename: stuart_setup
+    arguments: -c ci/CISettings.py -p ${{ parameters.build_pkgs }} -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
+
+- task: CmdLine@1
+  displayName: Update ${{ parameters.build_pkgs }}
+  inputs:
+    filename: stuart_update
+    arguments: -c ci/CISettings.py -p ${{ parameters.build_pkgs }} -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
+
+- task: CmdLine@1
+  displayName: Build and Test ${{ parameters.build_pkgs }}
+  inputs:
+    filename: stuart_ci_build
+    arguments: -c ci/CISettings.py -p ${{ parameters.build_pkgs }} -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
+
+# Publish Test Results to Azure Pipelines/TFS
+- task: PublishTestResults@2
+  displayName: 'Publish junit test results'
+  continueOnError: true
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+    testResultsFiles: 'Build/TestSuites.xml'
+    #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
+    mergeTestResults: true # Optional
+    testRunTitle: $(System.JobName) # Optional
+    #buildPlatform: # Optional
+    #buildConfiguration: # Optional
+    publishRunAttachments: true # Optional
+
+# Publish Test Results to Azure Pipelines/TFS
+- task: PublishTestResults@2
+  displayName: 'Publish host based test results for $(System.JobName)'
+  continueOnError: true
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+    testResultsFiles: 'Build/**/*.result.xml'
+    #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
+    mergeTestResults: false # Optional
+    testRunTitle: ${{ parameters.build_pkgs }} # Optional
+    #buildPlatform: # Optional
+    #buildConfiguration: # Optional
+    publishRunAttachments: true # Optional
+
+# Copy the build logs to the artifact staging directory
+- task: CopyFiles@2
+  displayName: "Copy build logs"
+  inputs:
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    SourceFolder: 'Build'
+    contents: |
+      BUILDLOG_*.txt
+      BUILDLOG_*.md
+      CI_*.txt
+      CI_*.md
+      CISETUP.txt
+      SETUPLOG.txt
+      UPDATE_LOG.txt
+      TestSuites.xml
+      **/BUILD_TOOLS_REPORT.html
+      **/OVERRIDELOG.TXT
+    flattenFolders: true
+  condition: succeededOrFailed()
+
+# Publish build artifacts to Azure Artifacts/TFS or a file share
+- task: PublishBuildArtifacts@1
+  continueOnError: true
+  displayName: "Publish build logs"
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'Build Logs $(System.JobName)'
+  condition: succeededOrFailed()

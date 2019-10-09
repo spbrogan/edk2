@@ -32,5 +32,10 @@
     },
     "LibraryClassCheck": {
         "IgnoreHeaderFile": []
+    },
+    "SpellCheck": {
+        "ExtendWords": [
+            "FMPSTATE",
+        ]
     }
 }

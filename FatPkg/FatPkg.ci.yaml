@@ -33,5 +33,15 @@
     },
     "LibraryClassCheck": {
         "IgnoreHeaderFile": []
+    },
+    "SpellCheck": {
+        "ExtendWords": [
+            "ELTORITO",
+            "FHAND",
+            "IFILE",
+            "OFILE",
+            "FDISKed",
+            "Lfnbuffer"
+        ]
     }
 }

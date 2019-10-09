@@ -8,6 +8,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
+//spell-checker:ignore CDVOL
+
 #include <IndustryStandard/ElTorito.h>
 #include "FatLitePeim.h"
 

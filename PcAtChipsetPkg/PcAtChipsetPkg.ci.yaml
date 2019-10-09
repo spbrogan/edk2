@@ -36,5 +36,12 @@
     },
     "LibraryClassCheck": {
         "IgnoreHeaderFile": []
+    },
+    "SpellCheck": {
+        "ExtendWords": [
+            "ENUMER", # this is part of an IDE enum
+            "PCATCHIPSET",
+            "TXRDY"
+        ]
     }
 }

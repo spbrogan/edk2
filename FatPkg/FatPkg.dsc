@@ -6,8 +6,10 @@
 #  Copyright (c) 2007 - 2018, Intel Corporation. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
-#
+# 
 ##
+
+# spell-checker:ignore DMDEPKG
 
 [Defines]
   PLATFORM_NAME                  = Fat

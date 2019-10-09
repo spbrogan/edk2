@@ -32,5 +32,50 @@
     },
     "LibraryClassCheck": {
         "IgnoreHeaderFile": []
+    },
+    "SpellCheck": {
+        "ExtendWords": [
+    "shortformed", # tpm acpi
+    "autodetect",
+    "blocksid",
+    "comid",
+    "cpinsidpin", #OpalSScV2
+    "disableif",
+    "ecdsa", # TPM 
+    "ecschnorr", # TPM
+    "efivarstore",
+    "eisaid", # ACPI
+    "endcheckbox",
+    "enddate",
+    "endformset",
+    "endnumeric",
+    "endof",
+    "endoneof",
+    "endstring",
+    "harddisk",
+    "hashall",
+    "hashto",
+    "ideqvallist",
+    "inmodule",
+    "kek's",
+    "lfanew", # PE/COFF
+    "numberof",
+    "oneof",
+    "pcrindex",
+    "pkglength",
+    "ppuser",
+    "preos",
+    "questionid",
+    "questionref",
+    "stclear",
+    "toctou",
+    "tpm's",
+    "tpmcmdbuflength",
+    "tpmcommlib",
+    "tpmnvvaluelength",
+    "unownered",
+    "wrlocked",
+    "xored"
+        ]
     }
 }

@@ -7,6 +7,8 @@
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
+# spell-checker:ignore regenc, oniggnu, reggnu, regint, regparse, regposerr, onigposix, regposix, regtrav, regversion, DHAVE
+
 [Defines]
   INF_VERSION     = 0x00010018
   BASE_NAME       = RegularExpressionDxe

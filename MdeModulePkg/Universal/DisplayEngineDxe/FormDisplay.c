@@ -712,7 +712,7 @@ UiAddMenuOption (
 
     if ((Statement->Attribute & HII_DISPLAY_READONLY) != 0) {
       MenuOption->ReadOnly = TRUE;
-      if (FeaturePcdGet (PcdBrowerGrayOutReadOnlyMenu)) {
+      if (FeaturePcdGet (PcdBrowserGrayOutReadOnlyMenu)) {
         MenuOption->GrayOut = TRUE;
       }
     }

@@ -56,7 +56,7 @@
 
 [FeaturePcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserGrayOutTextStatement     ## CONSUMES
-  gEfiMdeModulePkgTokenSpaceGuid.PcdBrowerGrayOutReadOnlyMenu       ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserGrayOutReadOnlyMenu       ## CONSUMES
 
 [UserExtensions.TianoCore."ExtraFiles"]
   DisplayEngineExtra.uni

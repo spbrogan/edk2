@@ -34,7 +34,7 @@
   ##  @libraryclass  Provides HII related functions.
   HiiLib|Include/Library/HiiLib.h
 
-  ##  @libraryclass  Defines a set of interfaces on how to process capusle image update.
+  ##  @libraryclass  Defines a set of interfaces on how to process capsule image update.
   CapsuleLib|Include/Library/CapsuleLib.h
 
   ##  @libraryclass    Provides global variables that are pointers
@@ -107,7 +107,7 @@
   #
   BootLogoLib|Include/Library/BootLogoLib.h
 
-  ## @libraryclass  Provides interfaces about Ipmi submit generic commond.
+  ## @libraryclass  Provides interfaces about Ipmi submit generic command.
   #
   IpmiLib|Include/Library/IpmiLib.h
 
@@ -160,7 +160,7 @@
   #  Include/Guid/MdeModuleHii.h
   gEfiIfrTianoGuid      = { 0xf0b1735, 0x87a0, 0x4193, {0xb2, 0x66, 0x53, 0x8c, 0x38, 0xaf, 0x48, 0xce }}
 
-  ## Guid for EDKII implementation extension, used to indaicate there are bit fields in the varstore.
+  ## Guid for EDKII implementation extension, used to indicate there are bit fields in the varstore.
   #  Include/Guid/MdeModuleHii.h
   gEdkiiIfrBitVarstoreGuid  = {0x82DDD68B, 0x9163, 0x4187, {0x9B, 0x27, 0x20, 0xA8, 0xFD, 0x60,0xA7, 0x1D}}
 
@@ -196,7 +196,7 @@
   #  Include/Guid/CapsuleVendor.h
   gEfiCapsuleVendorGuid          = { 0x711C703F, 0xC285, 0x4B10, { 0xA3, 0xB0, 0x36, 0xEC, 0xBD, 0x3C, 0x8B, 0xE2 }}
 
-  ## Guid specifiy the device is the StdErr device.
+  ## Guid specify the device is the StdErr device.
   #  Include/Guid/StandardErrorDevice.h
   gEfiStandardErrorDeviceGuid    = { 0xD3B36F2D, 0xD551, 0x11D4, { 0x9A, 0x46, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D }}
 
@@ -523,7 +523,7 @@
   ## Include/Protocol/SmmVarCheck.h
   gEdkiiSmmVarCheckProtocolGuid  = { 0xb0d8f3c1, 0xb7de, 0x4c11, { 0xbc, 0x89, 0x2f, 0xb5, 0x62, 0xc8, 0xc4, 0x11 } }
 
-  ## This protocol is similar with DXE FVB protocol and used in the UEFI SMM evvironment.
+  ## This protocol is similar with DXE FVB protocol and used in the UEFI SMM environment.
   #  Include/Protocol/SmmFirmwareVolumeBlock.h
   gEfiSmmFirmwareVolumeBlockProtocolGuid = { 0xd326d041, 0xbd31, 0x4c01, { 0xb5, 0xa8, 0x62, 0x8b, 0xe8, 0x7f, 0x6, 0x53 }}
 
@@ -786,11 +786,11 @@
   # @Prompt Always GrayOut TEXT statement.
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserGrayOutTextStatement|FALSE|BOOLEAN|0x0001004f
 
-  ## Indicates if unselectable menu should be gray out in HII Form Browser.<BR><BR>
-  #   TRUE  - The unselectable menu will be set to GrayOut.<BR>
+  ## Indicates if non-selectable menu should be gray out in HII Form Browser.<BR><BR>
+  #   TRUE  - The non-selectable menu will be set to GrayOut.<BR>
   #   FALSE - The menu will be show as normal menu entry even if it is not selectable.<BR>
   # @Prompt GrayOut read only menu.
-  gEfiMdeModulePkgTokenSpaceGuid.PcdBrowerGrayOutReadOnlyMenu|FALSE|BOOLEAN|0x00010070
+  gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserGrayOutReadOnlyMenu|FALSE|BOOLEAN|0x00010070
 
   ## Indicates if recovery from IDE disk will be supported.<BR><BR>
   #   TRUE  - Supports recovery from IDE disk.<BR>
@@ -942,7 +942,7 @@
   # If a bit is set, a head guard page and a tail guard page will be added just
   # before and after corresponding type of pages allocated if there's enough
   # free pages for all of them. The page allocation for the type related to
-  # cleared bits keeps the same as ususal.
+  # cleared bits keeps the same as usual.
   #
   # This PCD is only valid if BIT0 and/or BIT2 are set in PcdHeapGuardPropertyMask.
   #
@@ -973,7 +973,7 @@
   # If a bit is set, a head guard page and a tail guard page will be added just
   # before and after corresponding type of pages which the allocated pool occupies,
   # if there's enough free memory for all of them. The pool allocation for the
-  # type related to cleared bits keeps the same as ususal.
+  # type related to cleared bits keeps the same as usual.
   #
   # This PCD is only valid if BIT1 and/or BIT3 are set in PcdHeapGuardPropertyMask.
   #
@@ -1155,7 +1155,7 @@
   #  This PCD is ignored if PcdSerialUseHardwareFlowControl is FALSE.<BR><BR>
   #   TRUE  - 16550 serial Tx operations will be blocked if DSR is not asserted.<BR>
   #   FALSE - 16550 serial Tx operations will not be blocked if DSR is not asserted.<BR>
-  # @Prompt Enable serial port cable detetion.
+  # @Prompt Enable serial port cable detection.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialDetectCable|FALSE|BOOLEAN|0x00020006
 
   ## Base address of 16550 serial port registers in MMIO or I/O space. Default is 0x3F8.
@@ -1325,7 +1325,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeNxMemoryProtectionPolicy|0x0000000|UINT64|0x00001048
 
   ## PCI Serial Device Info. It is an array of Device, Function, and Power Management
-  #  information that describes the path that contains zero or more PCI to PCI briges
+  #  information that describes the path that contains zero or more PCI to PCI bridges
   #  followed by a PCI serial device.  Each array entry is 4-bytes in length.  The
   #  first byte is the PCI Device Number, then second byte is the PCI Function Number,
   #  and the last two bytes are the offset to the PCI power management capabilities
@@ -1378,7 +1378,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0xdc, 0x5b, 0xc2, 0xee, 0xf2, 0x67, 0x95, 0x4d, 0xb1, 0xd5, 0xf8, 0x1b, 0x20, 0x39, 0xd1, 0x1d }|VOID*|0x0001006b
 
   ## This PCD points to the formset GUID of the driver health management form
-  #  The form will be popped up by BDS core when there are Configuration Required driver health intances.
+  #  The form will be popped up by BDS core when there are Configuration Required driver health instances.
   #  Platform can customize the PCD to point to different formset.
   # @Prompt Driver Health Management Form
   gEfiMdeModulePkgTokenSpaceGuid.PcdDriverHealthConfigureForm|{ 0xf4, 0xd9, 0x96, 0x42, 0xfc, 0xf6, 0xde, 0x4d, 0x86, 0x85, 0x8c, 0xe2, 0xd7, 0x9d, 0x90, 0xf0 }|VOID*|0x0001006c
@@ -1483,7 +1483,7 @@
   #   TRUE  - Capsule On Disk is supported.<BR>
   #   FALSE - Capsule On Disk is not supported.<BR>
   #  If platform does not use this feature, this PCD should be set to FALSE.<BR><BR>
-  #  Two sulotions to deliver Capsule On Disk:<BR>
+  #  Two solutions to deliver Capsule On Disk:<BR>
   #    a) If PcdCapsuleInRamSupport = TRUE, Load Capsule On Disk image out of TCB, and reuse
   #       Capsule In Ram to deliver capsule.<BR>
   #    b) If PcdCapsuleInRamSupport = FALSE, Relocate Capsule On Disk image to RootDir out
@@ -1555,7 +1555,7 @@
   ## Size of the NV variable range. Note that this value should less than or equal to PcdFlashNvStorageFtwSpareSize.
   #  The root cause is that variable driver will use FTW protocol to reclaim variable region.
   #  If the length of variable region is larger than FTW spare size, it means the whole variable region can not
-  #  be reflushed through the manner of fault tolerant write.
+  #  be re-flushed through the manner of fault tolerant write.
   # @Prompt Size of flash NV variable range.
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x0|UINT32|0x30000002
 
@@ -1566,7 +1566,7 @@
   ## Size of the FTW spare block range. Note that this value should larger than PcdFlashNvStorageVariableSize and block size aligned.
   # The root cause is that variable driver will use FTW protocol to reclaim variable region.
   # If the length of variable region is larger than FTW spare size, it means the whole variable region can not
-  # be reflushed through the manner of fault tolerant write.
+  # be re-flushed through the manner of fault tolerant write.
   # @Prompt Size of flash FTW spare block range.
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x0|UINT32|0x30000014
 
@@ -1609,7 +1609,7 @@
 
   ## This PCD defines the times to print hello world string.
   #  This PCD is a sample to explain UINT32 PCD usage.
-  # @Prompt HellowWorld print times.
+  # @Prompt HelloWorld print times.
   gEfiMdeModulePkgTokenSpaceGuid.PcdHelloWorldPrintTimes|1|UINT32|0x40000005
 
   ## This PCD defines the HelloWorld print string.
@@ -1623,7 +1623,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxSizePopulateCapsule|0x6400000|UINT32|0x0001001e
 
   ## Indicates the maximum size of the capsule image without a reset flag that the platform can support.
-  #  The default max size is 10MB (0xa00000) for the casule image without reset flag setting.
+  #  The default max size is 10MB (0xa00000) for the capsule image without reset flag setting.
   # @Prompt Max size of non-populated capsule.
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxSizeNonPopulateCapsule|0xa00000|UINT32|0x0001001f
 
@@ -1794,8 +1794,8 @@
   # @Prompt SMBIOS version.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0302|UINT16|0x00010055
 
-  ## SMBIOS Docrev field in SMBIOS 3.0 (64-bit) Entry Point Structure.
-  # @Prompt SMBIOS Docrev field in SMBIOS 3.0 (64-bit) Entry Point Structure.
+  ## SMBIOS DocRev field in SMBIOS 3.0 (64-bit) Entry Point Structure.
+  # @Prompt SMBIOS DocRev field in SMBIOS 3.0 (64-bit) Entry Point Structure.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0|UINT8|0x0001006A
 
   ## SMBIOS produce method.
@@ -1857,7 +1857,7 @@
 
   ## Publish PropertiesTable or not.
   #
-  # If this PCD is TRUE, DxeCore publishs PropertiesTable.
+  # If this PCD is TRUE, DxeCore publishes PropertiesTable.
   # DxeCore evaluates if all runtime drivers has 4K aligned PE sections. If all
   # PE sections in runtime drivers are 4K aligned, DxeCore sets BIT0 in
   # PropertiesTable. Or DxeCore clears BIT0 in PropertiesTable.
@@ -1870,8 +1870,8 @@
   #   3) Set EfiRuntimeServicesData to be EFI_MEMORY_XP.
   #   4) Set EfiMemoryMappedIO and EfiMemoryMappedIOPortSpace to be EFI_MEMORY_XP.
   #
-  # NOTE: Platform need gurantee this PCD is set correctly. Platform should set
-  # this PCD to be TURE if and only if all runtime driver has seperated Code/Data
+  # NOTE: Platform need guarantee this PCD is set correctly. Platform should set
+  # this PCD to be TURE if and only if all runtime driver has separated Code/Data
   # section. If PE code/data sections are merged, the result is unpredictable.
   #
   # UEFI 2.6 specification does not recommend to use this BIT0 attribute.
@@ -1996,7 +1996,7 @@
   # @Prompt Enable Capsule In Ram support.
   gEfiMdeModulePkgTokenSpaceGuid.PcdCapsuleInRamSupport|TRUE|BOOLEAN|0x0000002e
 
-  ## Full device path of plaform specific device to store Capsule On Disk temp relocation file.<BR>
+  ## Full device path of platform specific device to store Capsule On Disk temp relocation file.<BR>
   #  If this PCD is set, Capsule On Disk temp relocation file will be stored in the device specified
   #  by this PCD, instead of the EFI System Partition that stores capsule image file.
   # @Prompt Capsule On Disk relocation device path.

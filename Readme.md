@@ -7,8 +7,8 @@ for the UEFI and PI specifications from www.uefi.org.
 
 | Host Type | Toolchain | Branch | Build Status | Test Status | Code Coverage |
 | :-------- | :-------- | :---- | :----- | :---- | :--- |
-| Windows | VS2019 | Master | [![Build Status](https://dev.azure.com/tianocore/edk2-ci-play/_apis/build/status/Edk2%20Windows%20VS2019%20Pr-Gate?branchName=master)](https://dev.azure.com/tianocore/edk2-ci-play/_build/latest?definitionId=14&branchName=master) | ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/tianocore/edk2-ci-play/14.svg) | ![Code Coverage](https://img.shields.io/badge/coverage-coming_soon-blue)|
-| Ubuntu | GCC5 | Master | [![Build Status](https://dev.azure.com/tianocore/edk2-ci-play/_apis/build/status/Edk2%20Ubuntu%20GCC5%20Pr-Gate?branchName=master)](https://dev.azure.com/tianocore/edk2-ci-play/_build/latest?definitionId=15&branchName=master) | ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/tianocore/edk2-ci-play/15.svg) | ![Code Coverage](https://img.shields.io/badge/coverage-coming_soon-blue)|
+| Windows | VS2019 | prtest/master | [![Build Status](https://dev.azure.com/tianocore/edk2-ci-play/_apis/build/status/Edk2%20Windows%20VS2019%20CI?branchName=prtest%2Fmaster)](https://dev.azure.com/tianocore/edk2-ci-play/_build/latest?definitionId=14&branchName=prtest%2Fmaster) | ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/tianocore/edk2-ci-play/14.svg) | ![Code Coverage](https://img.shields.io/badge/coverage-coming_soon-blue)|
+| Ubuntu | GCC5 | prtest/master | [![Build Status](https://dev.azure.com/tianocore/edk2-ci-play/_apis/build/status/Edk2%20Ubuntu%20GCC5%20CI?branchName=prtest%2Fmaster)](https://dev.azure.com/tianocore/edk2-ci-play/_build/latest?definitionId=15&branchName=prtest%2Fmaster) | ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/tianocore/edk2-ci-play/15.svg) | ![Code Coverage](https://img.shields.io/badge/coverage-coming_soon-blue)|
 
 [More CI Build information](ci/readme.md)
 

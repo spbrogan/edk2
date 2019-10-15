@@ -4,7 +4,7 @@
   support the setting of the global debug print error level mask for the platform.
 
   Copyright (c) 2011 - 2018, Intel Corporation. All rights reserved.<BR>
-  SPDX-License-Identifier: BSD-2-Clause-Patent
+  SPDX-License-Identifier: BSD-2-Clause-Patent change here
 
 **/
 

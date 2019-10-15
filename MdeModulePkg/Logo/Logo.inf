@@ -3,7 +3,7 @@
 #
 #  Copyright (c) 2006 - 2018, Intel Corporation. All rights reserved.<BR>
 #
-#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#  SPDX-License-Identifier: BSD-2-Clause-Patent  and another private change here to kick the build
 #
 #
 ##

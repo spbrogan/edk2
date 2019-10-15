@@ -40,7 +40,6 @@ steps:
 
 # install spell check prereqs
 - template: spell-check-prereq-steps.yml
-  condition: gt($[pkg_count], 0)
 
 # Build repo
 - task: CmdLine@1

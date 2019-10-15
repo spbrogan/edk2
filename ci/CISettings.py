@@ -9,10 +9,11 @@ from edk2toolext.environment import shell_environment
 from edk2toolext.invocables.edk2_ci_build import CiBuildSettingsManager
 from edk2toolext.invocables.edk2_setup import SetupSettingsManager, RequiredSubmodule
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
+from edk2toolext.invocables.edk2_pr_eval import PrEvalSettingsManager
 from edk2toollib.utility_functions import GetHostInfo
 
 
-class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManager):
+class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManager, PrEvalSettingsManager):
 
     def __init__(self):
         self.ActualPackages = []
@@ -148,3 +149,27 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
     def GetWorkspaceRoot(self):
         ''' get WorkspacePath '''
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    def FilterPackagesToTest(self, changedFilesList: list, potentialPackagesList: list) -> list:
+        ''' Filter potential packages to test based on changed files. '''
+        build_these_packages = []
+        possible_packages = potentialPackagesList.copy()
+        for f in changedFilesList:
+            nodes = f.split("/") # split each part of path for comparison later
+
+            # python file change in ci folder causes building all
+            if f.endswith(".py") and "ci" in nodes:
+                for a in possible_packages[:]:
+                    build_these_packages.append(a)
+                    possible_packages.remove(a)
+                break
+            
+            # BaseTools files that are not compiled file causes building all
+            if "BaseTools" in nodes:
+                if os.path.splitext(f) not in [".c", ".h"]:
+                    for a in possible_packages[:]:
+                        build_these_packages.append(a)
+                        possible_packages.remove(a)
+                    break 
+        return build_these_packages
+ 

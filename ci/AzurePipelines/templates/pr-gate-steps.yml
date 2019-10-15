@@ -46,21 +46,21 @@ steps:
   displayName: Setup ${{ parameters.build_pkgs }}
   inputs:
     filename: stuart_setup
-    arguments: -c ci/CISettings.py -p variables.pkgs_to_build -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
+    arguments: -c ci/CISettings.py -p $(pkgs_to_build) -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
   condition: gt(variables.pkg_count, 0)
 
 - task: CmdLine@1
   displayName: Update ${{ parameters.build_pkgs }}
   inputs:
     filename: stuart_update
-    arguments: -c ci/CISettings.py -p variables.pkgs_to_build -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
+    arguments: -c ci/CISettings.py -p $(pkgs_to_build) -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
   condition: gt(variables.pkg_count, 0)
 
 - task: CmdLine@1
   displayName: Build and Test ${{ parameters.build_pkgs }}
   inputs:
     filename: stuart_ci_build
-    arguments: -c ci/CISettings.py -p variables.pkgs_to_build -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
+    arguments: -c ci/CISettings.py -p $(pkgs_to_build) -t ${{ parameters.build_targets}} TOOL_CHAIN_TAG=${{ parameters.tool_chain_tag}}
   condition: gt(variables.pkg_count, 0)
 
 # Publish Test Results to Azure Pipelines/TFS

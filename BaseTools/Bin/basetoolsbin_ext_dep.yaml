@@ -1,6 +1,6 @@
 ##
 # Download the compiled basetools from nuget.org
-# - Nuget package contains different binaries based on the hsot os
+# - Nuget package contains different binaries based on the host os
 # Set this downloaded folder on path
 # Set a Shell variable to this path
 #
@@ -14,5 +14,5 @@
   "source": "https://api.nuget.org/v3/index.json",
   "version": "2019.03.1",
   "flags": ["set_shell_var", "set_path", "host_specific"],
-  "var_name": "EDK_TOOLS_PATH"
+  "var_name": "EDK_TOOLS_BIN"
 }

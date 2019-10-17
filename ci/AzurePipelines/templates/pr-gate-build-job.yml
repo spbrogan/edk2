@@ -9,6 +9,7 @@
 parameters:
   tool_chain_tag: ''
   vm_image: ''
+  arch_list: ''
 
 # Build step
 jobs: 
@@ -47,7 +48,7 @@ jobs:
     clean: all
 
   pool:
-    vmImage: ${{ parameters.vm_image}}
+    vmImage: ${{ parameters.vm_image }}
 
   steps:
   - template: pr-gate-steps.yml
@@ -55,4 +56,5 @@ jobs:
       tool_chain_tag: ${{ parameters.tool_chain_tag }}
       build_pkgs: $(Build.Pkgs)
       build_targets: $(Build.Targets)
+      build_archs: ${{ parameters.arch_list }}
 

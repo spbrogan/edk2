@@ -17,5 +17,5 @@
   "compression_type": "tar",
   "internal_path": "/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu/",
   "flags": ["set_shell_var", ],
-  "var_name": "GCC_AARCH_INSTALL"
+  "var_name": "GCC5_AARCH64_INSTALL"
 }

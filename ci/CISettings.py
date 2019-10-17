@@ -36,7 +36,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
     # ####################################################################################### #
 
     def GetPackagesSupported(self):
-        ''' return iterable of edk2 packages supported by this build. 
+        ''' return iterable of edk2 packages supported by this build.
         These should be edk2 workspace relative paths '''
 
         return ("MdePkg",
@@ -55,6 +55,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
         ''' return iterable of edk2 architectures supported by this build '''
         return ("IA32",
                 "X64",
+                "ARM",
                 "AARCH64")
 
     def GetTargetsSupported(self):
@@ -120,11 +121,11 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
 
         self.ActualToolChainTag = shell_environment.GetBuildVars().GetValue("TOOL_CHAIN_TAG", "")
 
-        if (GetHostInfo().os == "Linux"
-            and "AARCH64" in self.ActualArchitectures and
-                self.ActualToolChainTag.upper().startswith("GCC")):
-
-            scopes += ("gcc_aarch64_linux",)
+        if GetHostInfo().os.upper() == "LINUX" and self.ActualToolChainTag.upper().startswith("GCC")):
+            if "AARCH64" in self.ActualArchitectures:
+                scopes += ("gcc_aarch64_linux",)
+            if "ARM" in self.ActualArchitectures:
+                scopes += ("gcc_arm_linux",)
 
         return scopes
 
@@ -132,9 +133,11 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
         ''' return iterable containing RequiredSubmodule objects.
         If no RequiredSubmodules return an empty iterable
         '''
-        rs = []
-        rs.append(RequiredSubmodule("ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3", False))
-        rs.append(RequiredSubmodule("CryptoPkg/Library/OpensslLib/openssl", False))
+        rs=[]
+        rs.append(RequiredSubmodule(
+            "ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3", False))
+        rs.append(RequiredSubmodule(
+            "CryptoPkg/Library/OpensslLib/openssl", False))
         return rs
 
     def GetName(self):
@@ -152,10 +155,10 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
 
     def FilterPackagesToTest(self, changedFilesList: list, potentialPackagesList: list) -> list:
         ''' Filter potential packages to test based on changed files. '''
-        build_these_packages = []
-        possible_packages = potentialPackagesList.copy()
+        build_these_packages=[]
+        possible_packages=potentialPackagesList.copy()
         for f in changedFilesList:
-            nodes = f.split("/") # split each part of path for comparison later
+            nodes=f.split("/")  # split each part of path for comparison later
 
             # python file change in ci folder causes building all
             if f.endswith(".py") and "ci" in nodes:
@@ -163,13 +166,12 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
                     build_these_packages.append(a)
                     possible_packages.remove(a)
                 break
-            
+
             # BaseTools files that are not compiled file causes building all
             if "BaseTools" in nodes:
                 if os.path.splitext(f) not in [".c", ".h"]:
                     for a in possible_packages[:]:
                         build_these_packages.append(a)
                         possible_packages.remove(a)
-                    break 
+                    break
         return build_these_packages
- 

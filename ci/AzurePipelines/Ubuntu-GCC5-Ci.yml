@@ -9,9 +9,6 @@ trigger:
 
 pr: none
 
-variables:
-  GCC_AARCH_PREFIX: bin/aarch64-linux-gnu-
-
 jobs:
 - template: templates/pr-gate-build-job.yml
   parameters:

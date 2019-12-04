@@ -4,7 +4,7 @@
 # Supports VS2017, VS2019, and GCC5
 ##
 # Copyright (c) Microsoft Corporation
-#
+#dfadfdafd
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 import os

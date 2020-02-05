@@ -2773,9 +2773,12 @@ class DscBuildData(PlatformBuildClassObject):
             FileData = File.readlines()
             File.close()
             for Message in Messages:
+                #print(f"Message is: {Message}")
                 if " error" in Message or "warning" in Message:
                     FileInfo = Message.strip().split('(')
                     if len (FileInfo) > 1:
+                        # Parse error message like
+                        # c:\edk2\basetools\Source\C\Common\PcdValueCommon.c(481): error C2220: warning treated as error - no 'object' file generated
                         FileName = FileInfo [0]
                         FileLine = FileInfo [1].split (')')[0]
                     else:
@@ -2784,6 +2787,11 @@ class DscBuildData(PlatformBuildClassObject):
                             continue
                         FileName = FileInfo [0]
                         FileLine = FileInfo [1]
+                    #
+                    # I don't know what this is doing but it is a buggy
+                    # FileData is not the correct file for my error and thus the reference to line number is
+                    # out of bounds and python raises exception which is not helpful
+                    '''
                     if FileLine.isdigit():
                         error_line = FileData[int (FileLine) - 1]
                         if r"//" in error_line:
@@ -2806,6 +2814,9 @@ class DscBuildData(PlatformBuildClassObject):
                             continue
                     else:
                         MessageGroup.append(Message)
+                    '''
+                    MessageGroup.append(Message)
+                    ## END
             if MessageGroup:
                 EdkLogger.error("build", PCD_STRUCTURE_PCD_ERROR, "\n".join(MessageGroup) )
             else:

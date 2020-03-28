@@ -102,6 +102,13 @@ jobs:
         inputs:
           filename: stuart_build
           arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags)
+      # Run the emulator
+      - task: CmdLine@1
+        displayName: Run to shell
+        inputs:
+          filename: stuart_build
+          arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags) MAKE_STARTUP_NSH=TRUE --FlashOnly
+        timeoutInMinutes: 1
 
       # Copy the build logs to the artifact staging directory
       - task: CopyFiles@2

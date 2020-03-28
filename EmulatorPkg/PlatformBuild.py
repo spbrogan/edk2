@@ -118,6 +118,12 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
     def GetName(self):
         ''' Get the name of the repo, platform, or product being build '''
         ''' Used for naming the log file, among others '''
+
+        # check the startup nsh flag and if set then rename the log file.
+        # this helps in CI so we don't overwrite the build log since running
+        # uses the stuart_build command.
+        if(shell_environment.GetBuildVars().GetValue("MAKE_STARTUP_NSH", "FALSE") == "TRUE"):
+            return "EmulatorPkg_With_Run"
         return "EmulatorPkg"
 
     def GetLoggingLevel(self, loggerType):
@@ -135,6 +141,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         self.env.SetValue("TOOL_CHAIN_TAG", "VS2019", "Default Toolchain")
         if GetHostInfo().os.upper() == "WINDOWS":
             self.env.SetValue("BLD_*_WIN_HOST_BUILD", "TRUE", "Trigger Windows host build")
+        self.env.SetValue("MAKE_STARTUP_NSH", "FALSE", "Default to false")
         return 0
 
     def PlatformPreBuild(self):
@@ -148,6 +155,14 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         activate the emulator. '''
 
         OutputPath = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), self.env.GetValue("TARGET_ARCH"))
+
+        if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
+            f = open(os.path.join(OutputPath, "startup.nsh"), "w")
+            f.write("BOOT SUCCESS !!! \n")
+            ## add commands here
+            f.write("reset\n")
+            f.close()
+
         if GetHostInfo().os.upper() == "WINDOWS":
             cmd = "WinHost.exe"
         elif GetHostInfo().os.upper() == "LINUX":

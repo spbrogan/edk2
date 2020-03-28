@@ -37,6 +37,10 @@ This README-pytools.md summarizes how to _build_ EmulatorPkg using the Pytools b
 
 **NOTE:** configuring ACTIVE*PLATFORM and TARGET_ARCH in Conf/target.txt is \_not* required. This environment is set by PlatformBuild.py based upon the "`[-a <TARGET_ARCH>]`" parameter.
 
+## Custom Build Options
+
+**MAKE_STARTUP_NSH=TRUE** will output a _startup.nsh_ file to the location mapped as fs0. This is used in CI in combination with the --FlashOnly feature to run the emulator to the UEFI shell and then execute the contents of startup.nsh.
+
 ## Passing Build Defines
 
 To pass build defines through stuart*build to the edk2 build, prepend `BLD*\*\_`to the define name and pass it on the commandline. stuart_build [currently requires values to be assigned](https://github.com/tianocore/edk2-pytool-extensions/issues/128), so add an`=1` suffix for bare defines.

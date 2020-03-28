@@ -166,7 +166,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         if GetHostInfo().os.upper() == "WINDOWS":
             cmd = "WinHost.exe"
         elif GetHostInfo().os.upper() == "LINUX":
-            cmd = "Host"
+            cmd = "./Host"
         else:
             logging.critical("Unsupported Host")
             return -1

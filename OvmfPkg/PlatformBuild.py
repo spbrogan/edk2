@@ -170,12 +170,12 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             logging.critical("QEMU folder not found in program Files")
 
         cmd = "qemu-system-x86_64"
-        args  = "-debugcon file:" + QemuLogFile                                    # write messages to file
-        args += " -global isa-debugcon.iobase=0x402"                                # debug messages out thru virtual io port
-        args += " -net none"                                                        # turn off network
-        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk"         # Mount disk with startup.nsh
+        args  = "-debugcon file:" + QemuLogFile                             # write messages to file
+        args += " -global isa-debugcon.iobase=0x402"                        # debug messages out thru virtual io port
+        args += " -net none"                                                # turn off network
+        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
 
-        if (self.env.GetValue("QEMU_HEADLESS") == "TRUE"):
+        if (self.env.GetValue("QEMU_HEADLESS").upper() == "TRUE"):
             args += " -display none"  # no graphics
 
         if (self.env.GetBuildValue("SMM_REQUIRE") == "1"):
@@ -186,10 +186,10 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             args += " -drive if=pflash,format=raw,unit=0,file=" + os.path.join(OutputPath_FV, "OVMF_CODE.fd") + ",readonly=on"
             args += " -drive if=pflash,format=raw,unit=1,file=" + os.path.join(OutputPath_FV, "OVMF_VARS.fd")
         else:
-            args += " -pflash " + os.path.join(OutputPath_FV, "OVMF.fd")                 # path to firmware
+            args += " -pflash " + os.path.join(OutputPath_FV, "OVMF.fd")    # path to firmware
 
 
-        if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
+        if (self.env.GetValue("MAKE_STARTUP_NSH").upper() == "TRUE"):
             f = open(os.path.join(VirtualDrive, "startup.nsh"), "w")
             f.write("BOOT SUCCESS !!! \n")
             ## add commands here

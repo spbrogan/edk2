@@ -185,7 +185,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             #args += " -smp ..."
             args += " -global driver=cfi.pflash01,property=secure,value=on"
             args += " -drive if=pflash,format=raw,unit=0,file=" + os.path.join(OutputPath_FV, "OVMF_CODE.fd") + ",readonly=on"
-            args += " -drive if=pflash,format=raw,unit=1,file=" + os.path.join(OutputPath_FV, "copy_of_OVMF_VARS.fd")
+            args += " -drive if=pflash,format=raw,unit=1,file=" + os.path.join(OutputPath_FV, "OVMF_VARS.fd")
 
 
 

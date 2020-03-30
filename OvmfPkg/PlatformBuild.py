@@ -179,7 +179,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         if (self.env.GetValue("QEMU_HEADLESS") == "TRUE"):
             args += " -display none"  # no graphics
 
-        if (self.env.GetBuildValue("SMM_REQUIRE") == 1):
+        if (self.env.GetBuildValue("SMM_REQUIRE") == "1"):
             args += " -machine q35,smm=on" #,accel=(tcg|kvm)"
             #args += " -m ..."
             #args += " -smp ..."

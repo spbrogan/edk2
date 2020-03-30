@@ -12,6 +12,7 @@ from edk2toolext.environment.uefi_build import UefiBuilder
 from edk2toolext.invocables.edk2_platform_build import BuildSettingsManager
 from edk2toolext.invocables.edk2_setup import SetupSettingsManager, RequiredSubmodule
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
+from edk2toollib.utility_functions import RunCmd
 
 
     # ####################################################################################### #
@@ -123,6 +124,11 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
     def GetName(self):
         ''' Get the name of the repo, platform, or product being build '''
         ''' Used for naming the log file, among others '''
+        # check the startup nsh flag and if set then rename the log file.
+        # this helps in CI so we don't overwrite the build log since running
+        # uses the stuart_build command.
+        if(shell_environment.GetBuildVars().GetValue("MAKE_STARTUP_NSH", "FALSE") == "TRUE"):
+            return "OvmfPkg_With_Run"
         return "OvmfPkg"
 
     def GetLoggingLevel(self, loggerType):
@@ -137,6 +143,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
     def SetPlatformEnv(self):
         logging.debug("PlatformBuilder SetPlatformEnv")
         self.env.SetValue("PRODUCT_NAME", "OVMF", "Platform Hardcoded")
+        self.env.SetValue("MAKE_STARTUP_NSH", "FALSE", "Default to false")
         return 0
 
     def PlatformPreBuild(self):
@@ -144,3 +151,41 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
 
     def PlatformPostBuild(self):
         return 0
+
+    def FlashRomImage(self):
+        Arch = "X64" if "X64" in self.env.GetValue("TARGET_ARCH") else "IA32"
+        OutputPath_ArchBuild = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), Arch)
+        OutputPath_FV = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
+        QemuLogFile = os.path.join(self.env.GetValue("BUILD_OUT_TEMP"), "BootLog.txt")
+
+
+        cmd = "qemu-system-x86_64"
+        args =  "-pflash " + os.path.join(OutputPath_FV, "OVMF.fd")                 # path to firmware
+        args += " -debugcon file:" + QemuLogFile                                    # write messages to file
+        args += " -global isa-debugcon.iobase=0x402"                                # debug messages out thru virtual io port
+        args += " -net none"                                                        # turn off network
+        args += " -no-reboot"                                                       # don't reboot
+        args += f" -drive file=fat:rw:{OutputPath_ArchBuild},format=raw,media=disk" # Mount disk with startup.nsh
+
+        if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
+            f = open(os.path.join(OutputPath_ArchBuild, "startup.nsh"), "w")
+            f.write("BOOT SUCCESS !!! \n")
+            ## add commands here
+            f.write("reset\n")
+            f.close()
+
+        ret = RunCmd(cmd, args)
+        # Seems like when "reset" is issued to QEMU that it exits with a non-zero return code
+        # for now lets parse the tail of the log and see if it was expected.
+        # This is crazy fragile and we should find a better way
+        if os.path.isfile(QemuLogFile):
+            with open(QemuLogFile, "r") as f:
+                lines = f.readlines()
+                if lines[-1].strip() == "DXE ResetSystem2: ResetType Cold, Call Depth = 1.":
+                    if lines[-2].strip() == "FSOpen: Open '\startup.nsh' Success":
+                        return 0
+
+        return ret
+
+
+

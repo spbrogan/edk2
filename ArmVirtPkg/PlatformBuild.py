@@ -180,10 +180,11 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         if (self.env.GetValue("TARGET_ARCH").upper() == "AARCH64"):
             cmd = "qemu-system-aarch64"
             args  = "-M virt"
-            args += " -cpu cortex-a57"
-            args += " -bios " + os.path.join(OutputPath_FV, "QEMU_EFI.fd")
-            args += " -m 1024"
+            args += " -cpu cortex-a57"                                          # emulate cpu
+            args += " -bios " + os.path.join(OutputPath_FV, "QEMU_EFI.fd")      # path to fw
+            args += " -m 1024"                                                  # 1gb memory
             args += " -net none"                                                # turn off network
+            args += " -serial stdio"                                            # Serial messages out
             args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
         else:
             raise NotImplementedError()

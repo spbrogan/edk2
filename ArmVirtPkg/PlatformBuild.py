@@ -13,6 +13,7 @@ from edk2toolext.invocables.edk2_platform_build import BuildSettingsManager
 from edk2toolext.invocables.edk2_setup import SetupSettingsManager, RequiredSubmodule
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 from edk2toollib.utility_functions import RunCmd
+from edk2toollib.utility_functions import GetHostInfo
 
 
     # ####################################################################################### #
@@ -22,10 +23,10 @@ class CommonPlatform():
     ''' Common settings for this platform.  Define static data here and use
         for the different parts of stuart
     '''
-    PackagesSupported = ("ArmVertPkg",)
+    PackagesSupported = ("ArmVirtPkg",)
     ArchSupported = ("AARCH64", "ARM")
     TargetsSupported = ("DEBUG", "RELEASE", "NOOPT")
-    Scopes = ('armvert', 'edk2-build')
+    Scopes = ('armvirt', 'edk2-build')
     WorkspaceRoot = os.path.realpath(os.path.join(
         os.path.dirname(os.path.abspath(__file__)), ".."))
 
@@ -78,7 +79,15 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
 
     def GetActiveScopes(self):
         ''' return tuple containing scopes that should be active for this process '''
-        return CommonPlatform.Scopes
+
+        scopes = CommonPlatform.Scopes
+
+        if GetHostInfo().os.upper() == "LINUX" and self.ActualToolChainTag.upper().startswith("GCC"):
+            if "AARCH64" in self.ActualArchitectures:
+                scopes += ("gcc_aarch64_linux",)
+            if "ARM" in self.ActualArchitectures:
+                scopes += ("gcc_arm_linux",)
+        return scopes
 
 
     # ####################################################################################### #

@@ -153,8 +153,8 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         return 0
 
     def FlashRomImage(self):
-        Arch = "X64" if "X64" in self.env.GetValue("TARGET_ARCH") else "IA32"
-        OutputPath_ArchBuild = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), Arch)
+        VirtualDrive = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "VirtualDrive")
+        os.mkdir(VirtualDrive)
         OutputPath_FV = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
         QemuLogFile = os.path.join(self.env.GetValue("BUILD_OUT_TEMP"), "BootLog.txt")
 
@@ -165,10 +165,10 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         args += " -global isa-debugcon.iobase=0x402"                                # debug messages out thru virtual io port
         args += " -net none"                                                        # turn off network
         args += " -no-reboot"                                                       # don't reboot
-        args += f" -drive file=fat:rw:{OutputPath_ArchBuild},format=raw,media=disk" # Mount disk with startup.nsh
+        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
 
         if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
-            f = open(os.path.join(OutputPath_ArchBuild, "startup.nsh"), "w")
+            f = open(os.path.join(VirtualDrive, "startup.nsh"), "w")
             f.write("BOOT SUCCESS !!! \n")
             ## add commands here
             f.write("reset\n")

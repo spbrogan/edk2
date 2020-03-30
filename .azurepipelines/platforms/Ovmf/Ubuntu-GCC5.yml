@@ -104,7 +104,7 @@ jobs:
             BASETOOLS_BUILD*.*
           flattenFolders: true
 
-      - bash: sudo apt-get install qemu-kvm qemu virt-manager virt-viewer libvert-bin
+      - bash: sudo apt-get install qemu
         displayName: Install qemu
 
       # Setup repo

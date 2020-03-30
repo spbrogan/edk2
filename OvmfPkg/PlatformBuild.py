@@ -164,8 +164,10 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         # should move into plugin since Qemu can be used by lots of
         # platforms.  Issue is --FlashOnly doesn't run prebuild and thus plugin is skipped
         # Discuss this with PyTool project
-        if os.path.isdir("\\Program Files\qemu"):
-            shell_environment.GetEnvironment().append_path(os.path.abspath("\\Program Files\qemu"))
+        if os.path.isdir("\\Program Files\\qemu"):
+            shell_environment.GetEnvironment().append_path(os.path.abspath("\\Program Files\\qemu"))
+        else:
+            logging.critical("QEMU folder not found in program Files")
 
         cmd = "qemu-system-x86_64"
         args =  "-pflash " + os.path.join(OutputPath_FV, "OVMF.fd")                 # path to firmware
@@ -173,7 +175,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         args += " -global isa-debugcon.iobase=0x402"                                # debug messages out thru virtual io port
         args += " -net none"                                                        # turn off network
         args += " -no-reboot"                                                       # don't reboot
-        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk"         # Mount disk with startup.nsh
 
         if (self.env.GetValue("QEMU_HEADLESS") == "TRUE"):
             args += " -display none"  # no graphics

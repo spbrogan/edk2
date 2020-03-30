@@ -98,6 +98,9 @@ jobs:
             BASETOOLS_BUILD*.*
           flattenFolders: true
 
+      - powershell: choco install qemu # contents of the script to run
+        displayName: Install QEMU # friendly name displayed in the UI
+
       # Setup repo
       - task: CmdLine@1
         displayName: Setup
@@ -118,7 +121,7 @@ jobs:
           arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags)
       # execute emulator
       - task: CmdLine@1
-        displayName: Build
+        displayName: Run to shell
         inputs:
           filename: stuart_build
           arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags) MAKE_STARTUP_NSH=TRUE --FlashOnly

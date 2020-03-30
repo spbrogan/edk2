@@ -174,32 +174,30 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         args += " -debugcon file:" + QemuLogFile                                    # write messages to file
         args += " -global isa-debugcon.iobase=0x402"                                # debug messages out thru virtual io port
         args += " -net none"                                                        # turn off network
-        args += " -no-reboot"                                                       # don't reboot
         args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk"         # Mount disk with startup.nsh
 
         if (self.env.GetValue("QEMU_HEADLESS") == "TRUE"):
             args += " -display none"  # no graphics
+
+        if (self.env.GetBuildValue("SMM_REQUIRE") == 1):
+            args += " -machine q35,smm=on" #,accel=(tcg|kvm)"
+            #args += " -m ..."
+            #args += " -smp ..."
+            args += " -global driver=cfi.pflash01,property=secure,value=on"
+            args += " -drive if=pflash,format=raw,unit=0,file=" + os.path.join(OutputPath_FV, "OVMF_CODE.fd") + ",readonly=on"
+            args += " -drive if=pflash,format=raw,unit=1,file=" + os.path.join(OutputPath_FV, "copy_of_OVMF_VARS.fd")
+
 
 
         if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
             f = open(os.path.join(VirtualDrive, "startup.nsh"), "w")
             f.write("BOOT SUCCESS !!! \n")
             ## add commands here
-            f.write("reset\n")
+            f.write("reset -s\n")
             f.close()
 
-        ret = RunCmd(cmd, args)
-        # Seems like when "reset" is issued to QEMU that it exits with a non-zero return code
-        # for now lets parse the tail of the log and see if it was expected.
-        # This is crazy fragile and we should find a better way
-        if os.path.isfile(QemuLogFile):
-            with open(QemuLogFile, "r") as f:
-                lines = f.readlines()
-                if lines[-1].strip() == "DXE ResetSystem2: ResetType Cold, Call Depth = 1.":
-                    if lines[-2].strip() == "FSOpen: Open '\startup.nsh' Success":
-                        return 0
-
-        return ret
+        RunCmd(cmd, args)
+        return 0
 
 
 

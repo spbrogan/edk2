@@ -35,7 +35,7 @@ This README-pytools.md summarizes how to _build_ EmulatorPkg using the Pytools b
   - You can add `--FlashRom` to the end of your build command and the emulator will run after the build is complete.
   - or use the flashonly feature like `stuart_build -c EmulatorPkg\PlatformBuild.py [TOOL_CHAIN_TAG=<TOOL_CHAIN_TAG>] -a <TARGET_ARCH> --FlashOnly` to just run the emulator.
 
-**NOTE:** configuring ACTIVE*PLATFORM and TARGET_ARCH in Conf/target.txt is \_not* required. This environment is set by PlatformBuild.py based upon the "`[-a <TARGET_ARCH>]`" parameter.
+**NOTE:** configuring ACTIVE_PLATFORM and TARGET_ARCH in Conf/target.txt is __not__ required. This environment is set by PlatformBuild.py based upon the `[-a <TARGET_ARCH>]` parameter.
 
 ## Custom Build Options
 
@@ -43,7 +43,7 @@ This README-pytools.md summarizes how to _build_ EmulatorPkg using the Pytools b
 
 ## Passing Build Defines
 
-To pass build defines through stuart*build to the edk2 build, prepend `BLD*\*\_`to the define name and pass it on the commandline. stuart_build [currently requires values to be assigned](https://github.com/tianocore/edk2-pytool-extensions/issues/128), so add an`=1` suffix for bare defines.
+To pass build defines through stuart*build to the edk2 build, prepend `BLD_*_` to the define name and pass it on the commandline. stuart_build [currently requires values to be assigned](https://github.com/tianocore/edk2-pytool-extensions/issues/128), so add an `=1` suffix for bare defines.
 For example, to enable the IP6 Network Stack, the stuart_build command-line would be:
 
 `stuart_build -c EmulatorPkg/PlatformBuild.py BLD_*_NETWORK_IP6_ENABLE=1`

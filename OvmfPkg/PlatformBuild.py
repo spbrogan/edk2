@@ -196,8 +196,13 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             f.write("reset -s\n")
             f.close()
 
-        RunCmd(cmd, args)
-        return 0
+        ret = RunCmd(cmd, args)
+
+        if ret == 0xc0000005:
+            #for some reason getting a c0000005 on successful return
+            return 0
+
+        return ret
 
 
 

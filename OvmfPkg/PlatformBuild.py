@@ -144,6 +144,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         logging.debug("PlatformBuilder SetPlatformEnv")
         self.env.SetValue("PRODUCT_NAME", "OVMF", "Platform Hardcoded")
         self.env.SetValue("MAKE_STARTUP_NSH", "FALSE", "Default to false")
+        self.env.SetValue("QEMU_HEADLESS", "FALSE", "Default to false")
         return 0
 
     def PlatformPreBuild(self):
@@ -154,9 +155,11 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
 
     def FlashRomImage(self):
         VirtualDrive = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "VirtualDrive")
-        os.mkdir(VirtualDrive)
+        os.makedirs(VirtualDrive, exist_ok=True)
         OutputPath_FV = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
         QemuLogFile = os.path.join(self.env.GetValue("BUILD_OUT_TEMP"), "BootLog.txt")
+        if os.path.exists(QemuLogFile):
+            os.remove(QemuLogFile)
 
 
         cmd = "qemu-system-x86_64"
@@ -166,6 +169,10 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         args += " -net none"                                                        # turn off network
         args += " -no-reboot"                                                       # don't reboot
         args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+
+        if (self.env.GetValue("QEMU_HEADLESS") == "TRUE"):
+            args += " -display none"  # no graphics
+
 
         if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
             f = open(os.path.join(VirtualDrive, "startup.nsh"), "w")

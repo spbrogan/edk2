@@ -3,9 +3,9 @@
 # - package contains different binaries based on host
 # Add the folder with the tool to the path
 #
-# This is only downloaded for scope cibuild thus
+# This is only downloaded for scope ovmf thus
 # should have no impact on the asl compiler used by any
-# given platform to build.
+# other given platform to build.
 #
 # Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -17,5 +17,5 @@
   "name": "iasl",
   "source": "https://api.nuget.org/v3/index.json",
   "version": "20190215.0.0",
-  "flags": ["set_path", "host_specific"]
+  "flags": ["set_path", "host_specific"],
 }

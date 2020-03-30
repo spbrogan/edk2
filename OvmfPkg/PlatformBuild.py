@@ -170,7 +170,6 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             logging.critical("QEMU folder not found in program Files")
 
         cmd = "qemu-system-x86_64"
-        args =  "-pflash " + os.path.join(OutputPath_FV, "OVMF.fd")                 # path to firmware
         args += " -debugcon file:" + QemuLogFile                                    # write messages to file
         args += " -global isa-debugcon.iobase=0x402"                                # debug messages out thru virtual io port
         args += " -net none"                                                        # turn off network
@@ -186,7 +185,8 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             args += " -global driver=cfi.pflash01,property=secure,value=on"
             args += " -drive if=pflash,format=raw,unit=0,file=" + os.path.join(OutputPath_FV, "OVMF_CODE.fd") + ",readonly=on"
             args += " -drive if=pflash,format=raw,unit=1,file=" + os.path.join(OutputPath_FV, "OVMF_VARS.fd")
-
+        else:
+            args =  "-pflash " + os.path.join(OutputPath_FV, "OVMF.fd")                 # path to firmware
 
 
         if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):

@@ -161,6 +161,11 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         if os.path.exists(QemuLogFile):
             os.remove(QemuLogFile)
 
+        # should move into plugin since Qemu can be used by lots of
+        # platforms.  Issue is --FlashOnly doesn't run prebuild and thus plugin is skipped
+        # Discuss this with PyTool project
+        if os.path.isdir("\\Program Files\qemu"):
+            shell_environment.GetEnvironment().append_path(os.path.abspath("\\Program Files\qemu"))
 
         cmd = "qemu-system-x86_64"
         args =  "-pflash " + os.path.join(OutputPath_FV, "OVMF.fd")                 # path to firmware

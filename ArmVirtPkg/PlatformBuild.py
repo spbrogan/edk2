@@ -123,11 +123,12 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         ''' return tuple containing scopes that should be active for this process '''
         scopes = CommonPlatform.Scopes
         ActualToolChainTag = shell_environment.GetBuildVars().GetValue("TOOL_CHAIN_TAG", "")
+        Arch = shell_environment.GetBuildVars().GetValue("TARGET_ARCH", "")
 
         if GetHostInfo().os.upper() == "LINUX" and ActualToolChainTag.upper().startswith("GCC"):
-            if "AARCH64" in self.ActualArchitectures:
+            if "AARCH64" == Arch:
                 scopes += ("gcc_aarch64_linux",)
-            if "ARM" in self.ActualArchitectures:
+            elif "ARM" == Arch:
                 scopes += ("gcc_arm_linux",)
         return scopes
 

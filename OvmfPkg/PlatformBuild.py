@@ -158,14 +158,9 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         os.makedirs(VirtualDrive, exist_ok=True)
         OutputPath_FV = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
 
-        # should move into plugin since Qemu can be used by lots of
-        # platforms.  Issue is --FlashOnly doesn't run prebuild and thus plugin is skipped
-        # Discuss this with PyTool project
-        if os.path.isdir("\\Program Files\\qemu"):
-            shell_environment.GetEnvironment().append_path(os.path.abspath("\\Program Files\\qemu"))
-        else:
-            logging.critical("QEMU folder not found in program Files")
-
+        #
+        # QEMU must be on the path
+        #
         cmd = "qemu-system-x86_64"
         args  = "-debugcon stdio"                                           # write messages to stdio
         args += " -global isa-debugcon.iobase=0x402"                        # debug messages out thru virtual io port

@@ -170,33 +170,34 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         OutputPath_FV = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
         Built_FV = os.path.join(OutputPath_FV, "QEMU_EFI.fd")
 
-
-        # should move into plugin since Qemu can be used by lots of
-        # platforms.  Issue is --FlashOnly doesn't run prebuild and thus plugin is skipped
-        # Discuss this with PyTool project
-        if os.path.isdir("\\Program Files\\qemu"):
-            shell_environment.GetEnvironment().append_path(os.path.abspath("\\Program Files\\qemu"))
-        else:
-            logging.critical("QEMU folder not found in program Files")
-
         # pad fd to 64mb
         with open(Built_FV, "ab") as fvfile:
             fvfile.seek(0, os.SEEK_END)
             additional = b'\0' * ((64 * 1024 * 1024)-fvfile.tell())
             fvfile.write(additional)
 
+        # QEMU must be on that path
+
+        # Unique Command and Args parameters per ARCH
         if (self.env.GetValue("TARGET_ARCH").upper() == "AARCH64"):
             cmd = "qemu-system-aarch64"
             args  = "-M virt"
             args += " -cpu cortex-a57"                                          # emulate cpu
-            args += " -pflash " +  Built_FV                                     # path to fw
-            args += " -m 1024"                                                  # 1gb memory
-            args += " -net none"                                                # turn off network
-            args += " -serial stdio"                                            # Serial messages out
-            args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+        elif(self.env.GetValue("TARGET_ARCH").upper() == "ARM"):
+            cmd = "qemu-system-arm"
+            args  = "-M virt"
+            args += " -cpu cortex-a15"                                          # emulate cpu
         else:
             raise NotImplementedError()
 
+        # Common Args
+        args += " -pflash " +  Built_FV                                     # path to fw
+        args += " -m 1024"                                                  # 1gb memory
+        args += " -net none"                                                # turn off network
+        args += " -serial stdio"                                            # Serial messages out
+        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+
+        # Conditional Args
         if (self.env.GetValue("QEMU_HEADLESS").upper() == "TRUE"):
             args += " -display none"  # no graphics
 

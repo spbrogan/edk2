@@ -8,10 +8,11 @@ This README-pytools.md summarizes how to _build_ ArmVirtPkg using the Pytools bu
 
 ### The Usual EDK2 Build Setup
 
-- [Download & Install Python 3.x](https://www.python.org/downloads/)
-- [Download & Install git](https://git-scm.com/download/)
-- [Configure Git for EDK II](https://github.com/tianocore/tianocore.github.io/wiki/Windows-systems#github-help)
-- [Download/Checkout the EDK II source tree from Github](https://github.com/tianocore/tianocore.github.io/wiki/Windows-systems#download)
+- [Python 3.8.x - Download & Install](https://www.python.org/downloads/)
+- [GIT - Download & Install](https://git-scm.com/download/)
+- [GIT - Configure for EDK II](https://github.com/tianocore/tianocore.github.io/wiki/Windows-systems#github-help)
+- [QEMU - Download, Install, and add to your path](https://www.qemu.org/download/)
+- [EDKII Source - Download/Checkout from Github](https://github.com/tianocore/tianocore.github.io/wiki/Windows-systems#download)
   - **NOTE:** Do _not_ follow the EDK II Compile Tools and Build instructions, see below...
 
 ### Differences from EDK Classic Build Setup
@@ -39,6 +40,9 @@ This README-pytools.md summarizes how to _build_ ArmVirtPkg using the Pytools bu
 
 1. Including the expected build architecture and toolchain to the _stuart_update_ command is critical. This is because there are extra scopes and tools that will be resolved during the update step that need to match your build step.
 2. Configuring _ACTIVE_PLATFORM_ and _TARGET_ARCH_ in Conf/target.txt is _not_ required. This environment is set by PlatformBuild.py based upon the "`[-a <TARGET_ARCH>]`" parameter.
+3. QEMU must be on your path.  On Windows this is a manual process and not part of the QEMU installer.
+
+**NOTE:** Logging the execution output will be in the normal stuart log as well as to your console.
 
 ## Custom Build Options
 

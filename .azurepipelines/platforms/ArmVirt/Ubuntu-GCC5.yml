@@ -34,6 +34,21 @@ jobs:
           Build.Arch: "AARCH64"
           Build.Flags: ""
           Build.Target: "NOOPT"
+        QEMU_ARM_DEBUG:
+          Build.File: "ArmVirtPkg/PlatformBuild.py"
+          Build.Arch: "ARM"
+          Build.Flags: ""
+          Build.Target: "DEBUG"
+        QEMU_ARM_RELEASE:
+          Build.File: "ArmVirtPkg/PlatformBuild.py"
+          Build.Arch: "ARM"
+          Build.Flags: ""
+          Build.Target: "RELEASE"
+        QEMU_ARM_NOOPT:
+          Build.File: "ArmVirtPkg/PlatformBuild.py"
+          Build.Arch: "ARM"
+          Build.Flags: ""
+          Build.Target: "NOOPT"
     workspace:
       clean: all
 

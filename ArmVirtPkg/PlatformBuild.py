@@ -185,18 +185,26 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             additional = b'\0' * ((64 * 1024 * 1024)-fvfile.tell())
             fvfile.write(additional)
 
+        # Unique Command and Args parameters per ARCH
         if (self.env.GetValue("TARGET_ARCH").upper() == "AARCH64"):
             cmd = "qemu-system-aarch64"
             args  = "-M virt"
             args += " -cpu cortex-a57"                                          # emulate cpu
-            args += " -pflash " +  Built_FV                                     # path to fw
-            args += " -m 1024"                                                  # 1gb memory
-            args += " -net none"                                                # turn off network
-            args += " -serial stdio"                                            # Serial messages out
-            args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+        elif(self.env.GetValue("TARGET_ARCH").upper() == "ARM"):
+            cmd = "qemu-system-arm"
+            args  = "-M virt"
+            args += " -cpu cortex-a15"                                          # emulate cpu
         else:
             raise NotImplementedError()
 
+        # Common Args
+        args += " -pflash " +  Built_FV                                     # path to fw
+        args += " -m 1024"                                                  # 1gb memory
+        args += " -net none"                                                # turn off network
+        args += " -serial stdio"                                            # Serial messages out
+        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+
+        # Conditional Args
         if (self.env.GetValue("QEMU_HEADLESS").upper() == "TRUE"):
             args += " -display none"  # no graphics
 

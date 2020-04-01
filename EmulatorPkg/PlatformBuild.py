@@ -139,8 +139,19 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         logging.debug("PlatformBuilder SetPlatformEnv")
         self.env.SetValue("PRODUCT_NAME", "EmulatorPkg", "Platform Hardcoded")
         self.env.SetValue("TOOL_CHAIN_TAG", "VS2019", "Default Toolchain")
+
+        # Add support for using the correct Platform Headers, tools, and Libs based on emulator architecture
+        # requested to be built.
+        if self.env.GetValue("TOOL_CHAIN_TAG") == "VS2019" or self.env.GetValue("TOOL_CHAIN_TAG") == "VS2017":
+            key = self.env.GetValue("TOOL_CHAIN_TAG") + "_HOST"
+            if self.env.GetValue("TARGET_ARCH") == "IA32":
+                shell_environment.ShellEnvironment().set_shell_var(key, "x86")
+            elif self.env.GetValue("TARGET_ARCH") == "X64":
+                shell_environment.ShellEnvironment().set_shell_var(key, "x64")
+
         if GetHostInfo().os.upper() == "WINDOWS":
             self.env.SetValue("BLD_*_WIN_HOST_BUILD", "TRUE", "Trigger Windows host build")
+
         self.env.SetValue("MAKE_STARTUP_NSH", "FALSE", "Default to false")
         return 0
 

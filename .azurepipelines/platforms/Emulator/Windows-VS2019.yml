@@ -29,16 +29,26 @@ jobs:
           Build.Arch: "X64"
           Build.Flags: ""
           Build.Target: "RELEASE"
-        # EMULATORPKG_IA32_DEBUG:
-        #   Build.File: "EmulatorPkg/PlatformBuild.py"
-        #   Build.Arch: "IA32"
-        #   Build.Flags: ""
-        #   Build.Target: "DEBUG"
-        # EMULATORPKG_IA32_RELEASE:
-        #   Build.File: "EmulatorPkg/PlatformBuild.py"
-        #   Build.Arch: "IA64"
-        #   Build.Flags: ""
-        #   Build.Target: "RELEASE"
+        EMULATORPKG_X64_NOOPT:
+          Build.File: "EmulatorPkg/PlatformBuild.py"
+          Build.Arch: "X64"
+          Build.Flags: ""
+          Build.Target: "NOOPT"
+        EMULATORPKG_IA32_DEBUG:
+          Build.File: "EmulatorPkg/PlatformBuild.py"
+          Build.Arch: "IA32"
+          Build.Flags: ""
+          Build.Target: "DEBUG"
+        EMULATORPKG_IA32_RELEASE:
+          Build.File: "EmulatorPkg/PlatformBuild.py"
+          Build.Arch: "IA32"
+          Build.Flags: ""
+          Build.Target: "RELEASE"
+        EMULATORPKG_IA32_NOOPT:
+          Build.File: "EmulatorPkg/PlatformBuild.py"
+          Build.Arch: "IA32"
+          Build.Flags: ""
+          Build.Target: "NOOPT"
     workspace:
       clean: all
 

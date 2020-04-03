@@ -14,11 +14,11 @@ from edk2toolext.invocables.edk2_setup import SetupSettingsManager, RequiredSubm
 from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 from edk2toollib.utility_functions import RunCmd
 from edk2toollib.utility_functions import GetHostInfo
+# ####################################################################################### #
+#                                Common Configuration                                     #
+# ####################################################################################### #
 
 
-    # ####################################################################################### #
-    #                                Common Configuration                                     #
-    # ####################################################################################### #
 class CommonPlatform():
     ''' Common settings for this platform.  Define static data here and use
         for the different parts of stuart
@@ -30,10 +30,11 @@ class CommonPlatform():
     WorkspaceRoot = os.path.realpath(os.path.join(
         os.path.dirname(os.path.abspath(__file__)), ".."))
 
-
     # ####################################################################################### #
     #                         Configuration for Update & Setup                                #
     # ####################################################################################### #
+
+
 class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
 
     def GetPackagesSupported(self):
@@ -66,11 +67,13 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
 
         Raise Exception if a list_of_requested_architectures is not supported
         '''
-        unsupported = set(list_of_requested_architectures) - set(self.GetArchitecturesSupported())
+        unsupported = set(list_of_requested_architectures) - \
+            set(self.GetArchitecturesSupported())
         if(len(unsupported) > 0):
-            errorString = ( "Unsupported Architecture Requested: " + " ".join(unsupported))
-            logging.critical( errorString )
-            raise Exception( errorString )
+            errorString = (
+                "Unsupported Architecture Requested: " + " ".join(unsupported))
+            logging.critical(errorString)
+            raise Exception(errorString)
         self.ActualArchitectures = list_of_requested_architectures
 
     def GetWorkspaceRoot(self):
@@ -90,26 +93,28 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
                 scopes += ("gcc_arm_linux",)
         return scopes
 
-
     # ####################################################################################### #
     #                         Actual Configuration for Platform Build                         #
     # ####################################################################################### #
-class PlatformBuilder( UefiBuilder, BuildSettingsManager):
+
+
+class PlatformBuilder(UefiBuilder, BuildSettingsManager):
     def __init__(self):
         UefiBuilder.__init__(self)
 
     def AddCommandLineOptions(self, parserObj):
         ''' Add command line options to the argparser '''
         parserObj.add_argument('-a', "--arch", dest="build_arch", type=str, default="AARCH64",
-            help="Optional - Architecture to build.  Default = AARCH64")
+                               help="Optional - Architecture to build.  Default = AARCH64")
 
     def RetrieveCommandLineOptions(self, args):
         '''  Retrieve command line options from the argparser '''
 
-        shell_environment.GetBuildVars().SetValue("TARGET_ARCH", args.build_arch.upper(), "From CmdLine")
-        shell_environment.GetBuildVars().SetValue("BLD_*_ARCH", args.build_arch.upper(), "From CmdLine")
+        shell_environment.GetBuildVars().SetValue(
+            "TARGET_ARCH", args.build_arch.upper(), "From CmdLine")
 
-        shell_environment.GetBuildVars().SetValue("ACTIVE_PLATFORM", "ArmVirtPkg/ArmVirtQemu.dsc", "From CmdLine")
+        shell_environment.GetBuildVars().SetValue(
+            "ACTIVE_PLATFORM", "ArmVirtPkg/ArmVirtQemu.dsc", "From CmdLine")
 
     def GetWorkspaceRoot(self):
         ''' get WorkspacePath '''
@@ -165,9 +170,11 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         return 0
 
     def FlashRomImage(self):
-        VirtualDrive = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "VirtualDrive")
+        VirtualDrive = os.path.join(self.env.GetValue(
+            "BUILD_OUTPUT_BASE"), "VirtualDrive")
         os.makedirs(VirtualDrive, exist_ok=True)
-        OutputPath_FV = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
+        OutputPath_FV = os.path.join(
+            self.env.GetValue("BUILD_OUTPUT_BASE"), "FV")
         Built_FV = os.path.join(OutputPath_FV, "QEMU_EFI.fd")
 
         # pad fd to 64mb
@@ -181,21 +188,24 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         # Unique Command and Args parameters per ARCH
         if (self.env.GetValue("TARGET_ARCH").upper() == "AARCH64"):
             cmd = "qemu-system-aarch64"
-            args  = "-M virt"
+            args = "-M virt"
             args += " -cpu cortex-a57"                                          # emulate cpu
         elif(self.env.GetValue("TARGET_ARCH").upper() == "ARM"):
             cmd = "qemu-system-arm"
-            args  = "-M virt"
+            args = "-M virt"
             args += " -cpu cortex-a15"                                          # emulate cpu
         else:
             raise NotImplementedError()
 
         # Common Args
-        args += " -pflash " +  Built_FV                                     # path to fw
+        args += " -pflash " + Built_FV                                     # path to fw
         args += " -m 1024"                                                  # 1gb memory
-        args += " -net none"                                                # turn off network
-        args += " -serial stdio"                                            # Serial messages out
-        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk" # Mount disk with startup.nsh
+        # turn off network
+        args += " -net none"
+        # Serial messages out
+        args += " -serial stdio"
+        # Mount disk with startup.nsh
+        args += f" -drive file=fat:rw:{VirtualDrive},format=raw,media=disk"
 
         # Conditional Args
         if (self.env.GetValue("QEMU_HEADLESS").upper() == "TRUE"):
@@ -204,17 +214,14 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         if (self.env.GetValue("MAKE_STARTUP_NSH").upper() == "TRUE"):
             f = open(os.path.join(VirtualDrive, "startup.nsh"), "w")
             f.write("BOOT SUCCESS !!! \n")
-            ## add commands here
+            # add commands here
             f.write("reset -s\n")
             f.close()
 
         ret = RunCmd(cmd, args)
 
         if ret == 0xc0000005:
-            #for some reason getting a c0000005 on successful return
+            # for some reason getting a c0000005 on successful return
             return 0
 
         return ret
-
-
-

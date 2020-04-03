@@ -66,7 +66,7 @@ jobs:
       - bash: sudo apt-get update
         displayName: Update apt
 
-      - bash: sudo apt-get install gcc g++ make uuid-dev
+      - bash: sudo apt-get install gcc g++ make uuid-dev libc6-dev-i386 libc6-dev
         displayName: Install required tools
 
       - task: CmdLine@1
@@ -103,12 +103,12 @@ jobs:
           filename: stuart_build
           arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags)
       # Run the emulator - Currently SegFaults.  Need Edk2 help to fix
-      #- task: CmdLine@1
-      #  displayName: Run to shell
-      #  inputs:
-      #    filename: stuart_build
-      #    arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags) MAKE_STARTUP_NSH=TRUE --FlashOnly
-      #  timeoutInMinutes: 1
+      - task: CmdLine@1
+       displayName: Run to shell
+       inputs:
+         filename: stuart_build
+         arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags) MAKE_STARTUP_NSH=TRUE --FlashOnly
+       timeoutInMinutes: 1
 
       # Copy the build logs to the artifact staging directory
       - task: CopyFiles@2

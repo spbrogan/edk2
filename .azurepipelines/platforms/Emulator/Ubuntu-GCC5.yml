@@ -29,16 +29,16 @@ jobs:
           Build.Arch: "X64"
           Build.Flags: ""
           Build.Target: "RELEASE"
-        # EMULATORPKG_IA32_DEBUG:
-        #   Build.File: "EmulatorPkg/PlatformBuild.py"
-        #   Build.Arch: "IA32"
-        #   Build.Flags: ""
-        #   Build.Target: "DEBUG"
-        # EMULATORPKG_IA32_RELEASE:
-        #   Build.File: "EmulatorPkg/PlatformBuild.py"
-        #   Build.Arch: "IA32"
-        #   Build.Flags: ""
-        #   Build.Target: "RELEASE"
+        EMULATORPKG_IA32_DEBUG:
+          Build.File: "EmulatorPkg/PlatformBuild.py"
+          Build.Arch: "IA32"
+          Build.Flags: ""
+          Build.Target: "DEBUG"
+        EMULATORPKG_IA32_RELEASE:
+          Build.File: "EmulatorPkg/PlatformBuild.py"
+          Build.Arch: "IA32"
+          Build.Flags: ""
+          Build.Target: "RELEASE"
     workspace:
       clean: all
 
@@ -102,13 +102,13 @@ jobs:
         inputs:
           filename: stuart_build
           arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags)
-      # Run the emulator
-      - task: CmdLine@1
-        displayName: Run to shell
-        inputs:
-          filename: stuart_build
-          arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags) MAKE_STARTUP_NSH=TRUE --FlashOnly
-        timeoutInMinutes: 1
+      # Run the emulator - Currently SegFaults.  Need Edk2 help to fix
+      #- task: CmdLine@1
+      #  displayName: Run to shell
+      #  inputs:
+      #    filename: stuart_build
+      #    arguments: -c $(Build.File) TOOL_CHAIN_TAG=$(tool_chain_tag) TARGET=$(Build.Target) -a $(Build.Arch) $(Build.Flags) MAKE_STARTUP_NSH=TRUE --FlashOnly
+      #  timeoutInMinutes: 1
 
       # Copy the build logs to the artifact staging directory
       - task: CopyFiles@2

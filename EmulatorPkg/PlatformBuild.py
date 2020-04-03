@@ -15,9 +15,11 @@ from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 from edk2toollib.utility_functions import RunCmd
 from edk2toollib.utility_functions import GetHostInfo
 
-    # ####################################################################################### #
-    #                                Common Configuration                                     #
-    # ####################################################################################### #
+# ####################################################################################### #
+#                                Common Configuration                                     #
+# ####################################################################################### #
+
+
 class CommonPlatform():
     ''' Common settings for this platform.  Define static data here and use
         for the different parts of stuart
@@ -29,10 +31,11 @@ class CommonPlatform():
     WorkspaceRoot = os.path.realpath(os.path.join(
         os.path.dirname(os.path.abspath(__file__)), ".."))
 
-
     # ####################################################################################### #
     #                         Configuration for Update & Setup                                #
     # ####################################################################################### #
+
+
 class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
 
     def GetPackagesSupported(self):
@@ -65,11 +68,13 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
 
         Raise Exception if a list_of_requested_architectures is not supported
         '''
-        unsupported = set(list_of_requested_architectures) - set(self.GetArchitecturesSupported())
+        unsupported = set(list_of_requested_architectures) - \
+            set(self.GetArchitecturesSupported())
         if(len(unsupported) > 0):
-            errorString = ( "Unsupported Architecture Requested: " + " ".join(unsupported))
-            logging.critical( errorString )
-            raise Exception( errorString )
+            errorString = (
+                "Unsupported Architecture Requested: " + " ".join(unsupported))
+            logging.critical(errorString)
+            raise Exception(errorString)
         self.ActualArchitectures = list_of_requested_architectures
 
     def GetWorkspaceRoot(self):
@@ -80,28 +85,28 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
         ''' return tuple containing scopes that should be active for this process '''
         return CommonPlatform.Scopes
 
-
     # ####################################################################################### #
     #                         Actual Configuration for Platform Build                         #
     # ####################################################################################### #
-class PlatformBuilder( UefiBuilder, BuildSettingsManager):
+
+
+class PlatformBuilder(UefiBuilder, BuildSettingsManager):
     def __init__(self):
         UefiBuilder.__init__(self)
 
     def AddCommandLineOptions(self, parserObj):
         ''' Add command line options to the argparser '''
         parserObj.add_argument('-a', "--arch", dest="build_arch", type=str, default="X64",
-            help="Optional - architecture to build.  IA32 will use IA32 for Pei & Dxe. "
-            "X64 will use X64 for both PEI and DXE.")
+                               help="Optional - architecture to build.  IA32 will use IA32 for Pei & Dxe. "
+                               "X64 will use X64 for both PEI and DXE.")
 
     def RetrieveCommandLineOptions(self, args):
         '''  Retrieve command line options from the argparser '''
 
-        shell_environment.GetBuildVars().SetValue("TARGET_ARCH", args.build_arch.upper(), "From CmdLine")
-        shell_environment.GetBuildVars().SetValue("BLD_*_ARCH", args.build_arch.upper(), "From CmdLine")
-
-
-        shell_environment.GetBuildVars().SetValue("ACTIVE_PLATFORM", "EmulatorPkg/EmulatorPkg.dsc", "From CmdLine")
+        shell_environment.GetBuildVars().SetValue(
+            "TARGET_ARCH", args.build_arch.upper(), "From CmdLine")
+        shell_environment.GetBuildVars().SetValue(
+            "ACTIVE_PLATFORM", "EmulatorPkg/EmulatorPkg.dsc", "From CmdLine")
 
     def GetWorkspaceRoot(self):
         ''' get WorkspacePath '''
@@ -150,7 +155,8 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
                 shell_environment.ShellEnvironment().set_shell_var(key, "x64")
 
         if GetHostInfo().os.upper() == "WINDOWS":
-            self.env.SetValue("BLD_*_WIN_HOST_BUILD", "TRUE", "Trigger Windows host build")
+            self.env.SetValue("BLD_*_WIN_HOST_BUILD", "TRUE",
+                              "Trigger Windows host build")
 
         self.env.SetValue("MAKE_STARTUP_NSH", "FALSE", "Default to false")
         return 0
@@ -165,12 +171,13 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         ''' Use the FlashRom Function to run the emulator.  This gives an easy stuart command line to
         activate the emulator. '''
 
-        OutputPath = os.path.join(self.env.GetValue("BUILD_OUTPUT_BASE"), self.env.GetValue("TARGET_ARCH"))
+        OutputPath = os.path.join(self.env.GetValue(
+            "BUILD_OUTPUT_BASE"), self.env.GetValue("TARGET_ARCH"))
 
         if (self.env.GetValue("MAKE_STARTUP_NSH") == "TRUE"):
             f = open(os.path.join(OutputPath, "startup.nsh"), "w")
             f.write("BOOT SUCCESS !!! \n")
-            ## add commands here
+            # add commands here
             f.write("reset\n")
             f.close()
 

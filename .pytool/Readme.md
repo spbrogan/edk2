@@ -6,7 +6,7 @@
 | :----               | :-----                   | :----                             | :---         |
 | ArmPkg              |
 | ArmPlatformPkg      |
-| ArmVirtPkg          |
+| ArmVirtPkg          | SEE PACKAGE README | SEE PACKAGE README |
 | CryptoPkg           | :heavy_check_mark: | :heavy_check_mark: | Spell checking in audit mode
 | DynamicTablesPkg    |
 | EmbeddedPkg         |

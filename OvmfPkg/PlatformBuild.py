@@ -30,6 +30,20 @@ class CommonPlatform():
     WorkspaceRoot = os.path.realpath(os.path.join(
         os.path.dirname(os.path.abspath(__file__)), ".."))
 
+    @classmethod
+    def GetDscName(cls, ArchCsv: str) -> str:
+        ''' return the DSC given the architectures requested.
+
+        ArchCsv: csv string containing all architectures to build
+        '''
+        dsc = "OvmfPkg"
+        if "IA32" in ArchCsv.upper().split(","):
+            dsc += "Ia32"
+        if "X64" in ArchCsv.upper().split(","):
+            dsc += "X64"
+        dsc += ".dsc"
+        return dsc
+
 
     # ####################################################################################### #
     #                         Configuration for Update & Setup                                #
@@ -112,8 +126,8 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager, PrEvalSetting
 
         The tuple should be (<workspace relative path to dsc file>, <input dictionary of dsc key value pairs>)
         '''
-        path = shell_environment.GetBuildVars().GetValue("ACTIVE_PLATFORM")
-        return (path, {})
+        dsc = CommonPlatform.GetDscName(",".join(self.self.ActualArchitectures))
+        return (f"OvmfPkg/{dsc}", {})
 
 
     # ####################################################################################### #
@@ -134,14 +148,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         '''  Retrieve command line options from the argparser '''
 
         shell_environment.GetBuildVars().SetValue("TARGET_ARCH"," ".join(args.build_arch.upper().split(",")), "From CmdLine")
-
-        dsc = "OvmfPkg"
-        if "IA32" in args.build_arch.upper().split(","):
-            dsc += "Ia32"
-        if "X64" in args.build_arch.upper().split(","):
-            dsc += "X64"
-        dsc += ".dsc"
-
+        dsc = CommonPlatform.GetDscName(args.build_arch())
         shell_environment.GetBuildVars().SetValue("ACTIVE_PLATFORM", f"OvmfPkg/{dsc}", "From CmdLine")
 
     def GetWorkspaceRoot(self):

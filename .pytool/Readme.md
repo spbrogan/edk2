@@ -10,7 +10,7 @@
 | CryptoPkg           | :heavy_check_mark: | :heavy_check_mark: | Spell checking in audit mode
 | DynamicTablesPkg    |
 | EmbeddedPkg         |
-| EmulatorPkg         |
+| EmulatorPkg         | SEE PACKAGE README | SEE PACKAGE README | Spell checking in audit mode, Library Class error
 | FatPkg              | :heavy_check_mark: | :heavy_check_mark: |
 | FmpDevicePkg        | :heavy_check_mark: | :heavy_check_mark: |
 | IntelFsp2Pkg        |

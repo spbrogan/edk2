@@ -18,7 +18,7 @@
 | MdeModulePkg        | :heavy_check_mark: | :heavy_check_mark: | DxeIpl dependency on ArmPkg, Depends on StandaloneMmPkg, Spell checking in audit mode
 | MdePkg              | :heavy_check_mark: | :heavy_check_mark: | Spell checking in audit mode
 | NetworkPkg          | :heavy_check_mark: | :heavy_check_mark: | Spell checking in audit mode
-| OvmfPkg             |
+| OvmfPkg             | SEE PACKAGE README | SEE PACKAGE README | Spell checking in audit mode
 | PcAtChipsetPkg      | :heavy_check_mark: | :heavy_check_mark: |
 | SecurityPkg         | :heavy_check_mark: | :heavy_check_mark: | Spell checking in audit mode
 | ShellPkg            | :heavy_check_mark: | :heavy_check_mark: | Spell checking in audit mode, 3 modules are not being built by DSC

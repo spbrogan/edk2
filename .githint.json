@@ -1,0 +1,22 @@
+{
+	"options": {
+		"detectPull": true
+	},
+	 "checks": {
+	 
+		"PR Description": {
+            "script": [
+                "const body = pull.body",
+                "return body.indexOf('REF:') > -1",
+                "       && body.indexOf('reviewed-by') > -1"
+            ],
+            "message": [
+                "The description of the PR should contain the following information",
+                "",
+                "`REF: <bug number>`",
+                "`<reviewed-by>`"
+            ]
+        },
+	 
+	 },
+}

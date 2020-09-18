@@ -61,6 +61,8 @@ EFI_LOCK  mDispatcherLock = EFI_INITIALIZE_LOCK_VARIABLE (TPL_HIGH_LEVEL);
 //
 BOOLEAN  gDispatcherRunning = FALSE;
 
+INT gSean = (1);  //test
+
 //
 // Module globals to manage the FwVol registration notification event
 //

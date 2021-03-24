@@ -1,0 +1,20 @@
+## @file
+# Azure Pipeline build file for a build using Windows and CLANGPDB
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+trigger:
+- master
+- stable/*
+
+pr:
+- master
+- stable/*
+
+jobs:
+- template: templates/pr-gate-build-job-clang.yml
+  parameters:
+    tool_chain_tag: 'CLANGPDB'
+    vm_image: 'windows-latest'
+    arch_list: "IA32,X64"

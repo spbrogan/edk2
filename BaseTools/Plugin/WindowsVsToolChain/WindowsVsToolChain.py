@@ -1,5 +1,9 @@
 # @file WindowsVsToolChain.py
 # Plugin to configures paths for the VS2017 and VS2019 tool chain
+# 
+# This plugin also runs for clangpdb on Windows as that toolchain
+# leverages nmake from VS and needs to the SDK paths for unit tests
+#
 ##
 # This plugin works in conjuncture with the tools_def
 #
@@ -172,12 +176,95 @@ class WindowsVsToolChain(IUefiBuildPlugin):
             if not os.path.exists(shell_environment.GetEnvironment().get_shell_var("VS2019_PREFIX")):
                 self.Logger.error("Path for VS2019 toolchain is invalid")
                 return -2
+        
+        #
+        # CLANGPDB on Windows uses nmake from
+        # the VS compiler toolchain.   Find a version and set
+        # as the CLANG_HOST_BIN path if not already set.
+        #
+        # Also get the platform header files, SDK, etc based on the
+        # host type.  This is used for unit test compilation.
+        # If CLANG_VS_HOST is not set then find the host type based on Host Info.
+        ##
+        elif thebuilder.env.GetValue("TOOL_CHAIN_TAG") == "CLANGPDB":
+            HostInfo = GetHostInfo()
+
+            # check to see if host is configured
+            # HostType for VS tools should be (defined in tools_def):
+            # x86   == 32bit Intel
+            # x64   == 64bit Intel
+            # arm   == 32bit Arm
+            # arm64 == 64bit Arm
+            #
+            HostType = shell_environment.GetEnvironment().get_shell_var("CLANG_VS_HOST")
+            if HostType is not None:
+                HostType = HostType.lower()
+                self.Logger.info(
+                    f"CLANG_VS_HOST defined by environment.  Value is {HostType}")
+            else:
+                #figure it out based on host info
+                if HostInfo.arch == "x86":
+                    if HostInfo.bit == "32":
+                        HostType = "x86"
+                    elif HostInfo.bit == "64":
+                        HostType = "x64"
+                else:
+                    # anything other than x86 or x64 is not supported
+                    raise NotImplementedError()
+
+            # CLANG_VS_HOST options are not exactly the same as QueryVcVariables. This translates.
+            VC_HOST_ARCH_TRANSLATOR = {
+                "x86": "x86", "x64": "AMD64", "arm": "not supported", "arm64": "not supported"}
+
+            # now get the environment variables for the platform
+            shell_env = shell_environment.GetEnvironment()
+            # Use the tools lib to determine the correct values for the vars that interest us.
+            vs_vars = locate_tools.QueryVcVariables(
+                interesting_keys, VC_HOST_ARCH_TRANSLATOR[HostType])
+            for (k, v) in vs_vars.items():
+                shell_env.set_shell_var(k, v)
+            
+            ## 
+            # If environment already has CLANG_HOST_BIN set then user has already
+            # set the path to the VS tools like nmake.exe
+            ##
+            if shell_environment.GetEnvironment().get_shell_var("CLANG_HOST_BIN") is not None:
+                self.Logger.debug("CLANG_HOST_BIN is already set.")
+
+            else:
+                install_path = self._get_vs_install_path(None, None)
+                vc_ver = self._get_vc_version(install_path, None)
+
+                if install_path is None or vc_ver is None:
+                    self.Logger.error("Failed to find the VS environment for use by CLANGPDB")
+                    return -1
+
+                version_aggregator.GetVersionAggregator().ReportVersion(
+                    "Visual Studio Install Path", install_path, version_aggregator.VersionTypes.INFO)
+                version_aggregator.GetVersionAggregator().ReportVersion(
+                    "VC Version", vc_ver, version_aggregator.VersionTypes.TOOL)
+
+                # make path align with tools_def.txt
+                prefix = os.path.join(install_path, "VC", "Tools", "MSVC", vc_ver)
+                clang_host_bin_prefix = os.path.join(prefix, "bin", "Host%s" % HostType, HostType)
+
+                # now confirm it exists
+                if not os.path.exists(clang_host_bin_prefix):
+                    self.Logger.error("Path for VS toolchain is invalid")
+                    return -2
+
+                # The environment is using nmake (not make) so add "n" to the end of the path.
+                # The rest of the command is derived from definitions in tools.def.
+                shell_environment.GetEnvironment().set_shell_var("CLANG_HOST_BIN", os.path.join(clang_host_bin_prefix, "n"))
 
         return 0
 
     def _get_vs_install_path(self, vs_version, varname):
         # check if already specified
-        path = shell_environment.GetEnvironment().get_shell_var(varname)
+        path = None
+        if varname is not None:
+            path = shell_environment.GetEnvironment().get_shell_var(varname)
+        
         if(path is None):
             # Not specified...find latest
             (rc, path) = FindWithVsWhere(vs_version=vs_version)
